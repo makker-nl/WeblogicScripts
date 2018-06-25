@@ -1,0 +1,22 @@
+@set JAVA_HOME=c:\Program Files\Java\jdk1.8.0_161
+@set IDENTITY_STORE=20180312-identity-weblogic.jks 
+@set IDENTITY_STORE_P12=20180312-identity-weblogic.p12
+@set IDENTITY_CSR=20180312-identity-weblogic.csr
+@set IDENTITY_CERT=weblogic_test_darwin-it_nl.crt
+@set IDENTITY_PASS=9KElad932ae2Xka3OpOQ
+@set IDENTITY_ALIAS=weblogic-test
+@set KEY_PASS=9KElad932ae2Xka3OpOQ
+@set TRUST_STORE=20180312-trust-weblogic.jks 
+@set TRUST_PASS=9KElad932ae2Xka3OpOQ
+@set DNAME="CN=weblogic-test.darwin-it.nl, OU=Professionals, O=Darwin-IT, L=Amersfoort, ST=Utrecht, C=NL, EmailAddress=friemele.frans@darwin-it.nl"
+@set SAN=dns:weblogic,dns:weblogic.darwinit.local,dns:tomcat01,dns:weblogic.darwin-it.nl,dns:weblogic-test.darwin-it.nl,dns:weblogic-test
+@set VALIDITY=365
+@set KEYSIZE=2048
+@set CERT_HOME="certificaat"
+@set ROOT_CERT_HOME="certificaat\Root Certificates"
+@set ROOT_CERT_1=AddTrustExternalCARoot.crt
+@set ROOT_CERT_ALIAS_1=AddTrustExternalCARoot
+@set ROOT_CERT_2=MyCAAddTrustCA.crt
+@set ROOT_CERT_ALIAS_2=MyCAAddTrustCA
+@set ROOT_CERT_3=MyCADomainValidationSecureServerCA.crt
+@set ROOT_CERT_ALIAS_3=MyCADomainValidationSecureServerCA

@@ -1,0 +1,2 @@
+@call keystore_env.bat
+"%JAVA_HOME%"\bin\keytool -certreq  -alias %IDENTITY_ALIAS%  -keyalg RSA   -file %IDENTITY_CSR% -keystore %IDENTITY_STORE% -dname %DNAME% -ext SAN=%SAN% -keypass %KEY_PASS% -storepass %IDENTITY_PASS% 
