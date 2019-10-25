@@ -1,0 +1,9 @@
+<weblogic-web-app xmlns="http://www.bea.com/ns/weblogic/weblogic-web-app">
+ <!-- This element specifies the context path the static resources are served from -->
+ <context-root>${samlMetaData.contextRoot}</context-root>
+ <virtual-directory-mapping>
+  <!-- This element specifies the location on disk where the static resources are located -->
+  <local-path>${samlMetaData.home}</local-path>
+  <url-pattern>/*</url-pattern>
+ </virtual-directory-mapping>
+</weblogic-web-app>
