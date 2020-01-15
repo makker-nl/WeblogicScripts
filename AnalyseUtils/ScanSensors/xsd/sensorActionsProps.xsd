@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://xmlns.darwin-it.nl/bpel/sensorActions"
+            targetNamespace="http://xmlns.darwin-it.nl/bpel/sensorActions" elementFormDefault="qualified">
+  <xsd:element name="sensors">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sensor" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="action" maxOccurs="1">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="property">
+                      <xsd:complexType>
+                        <xsd:simpleContent>
+                          <xsd:extension base="xsd:string">
+                            <xsd:attribute name="name" type="xsd:string"/>
+                          </xsd:extension>
+                        </xsd:simpleContent>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                  <xsd:attribute name="name" type="xsd:string"/>
+                  <xsd:attribute name="publishName" type="xsd:string"/>
+                  <xsd:attribute name="publishType" type="xsd:string"/>
+                  <xsd:attribute name="enabled" type="xsd:string"/>
+                  <xsd:attribute name="filter" type="xsd:string"/>
+                  <xsd:attribute name="publishTarget" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="name" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

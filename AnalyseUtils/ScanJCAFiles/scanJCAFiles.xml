@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!--Ant Build file to scan JCA files in a repository and list relvant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="scanJCAFiles" default="all" basedir=".">
+  <property name="author" value="Martien van den Akker"/>
+  <property name="version" value="1.0"/>
+  <property environment="env"/>
+  <property file="build.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${ant-contrib.jar}"/>
+    </classpath>
+  </taskdef>
+  <!-- Initialisatie -->
+  <target name="clean" description="Clean the temp folder">
+    <delete dir="${jcaTempDir}"/>
+    <mkdir dir="${jcaTempDir}"/>
+  </target>
+  <!-- Perform all -->
+  <target name="all" description="Scan All SOA applications" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <echo file="${outputFile}" append="false"
+          message="project name,jcaFile,adapter-config-name,adapter-type,connection factory location,endpoint type,class,DestinationName,QueueName,DeliveryMode,TimeToLive,UseMessageListener,MessageSelector,PayloadType,ObjectFieldName,PayloadHeaderRequired,RecipientList,Consumer${line.separator}"></echo>
+    <foreach param="project.file" target="handleProject" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${svnRoot}" includes="**/*.jpr"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="handleProject">
+    <echo message="projectFile: ${project.file}"></echo>
+    <dirname property="project.dir" file="${project.file}"/>
+    <echo message="project dir: ${project.dir}"></echo>
+    <basename property="project.name" file="${project.file}" suffix=".jpr"/>
+    <foreach param="jca.file" target="handleJca" delimiter=";" inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${project.dir}" includes="**/*.jca"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="handleJca">
+    <basename property="jca.file.name" file="${jca.file}"/>
+    <property name="jca.file.props" value="${jcaTempDir}/${jca.file.name}.props"/>
+    <echo message="Jca File: ${jca.file.name}"></echo>
+    <xslt style="${jcaPropsXsl}" in="${jca.file}" out="${jca.file.props}"/>
+    <xmlproperty file="${jca.file.props}" collapseattributes="true"/>
+    <!-- see https://ant.apache.org/manual/Tasks/xmlproperty.html -->
+    <property name="cf.location" value="${adapter-config.connection-factory.location}"/>
+    <property name="ep.class" value="${adapter-config.endpoint.spec.className}"/>
+    <property name="ep.type" value="${adapter-config.endpoint.spec.type}"/>
+    <property name="ep.DestinationName" value="${adapter-config.endpoint.spec.DestinationName}"/>
+    <property name="ep.DeliveryMode" value="${adapter-config.endpoint.spec.DeliveryMode}"/>
+    <property name="ep.TimeToLive" value="${adapter-config.endpoint.spec.TimeToLive}"/>
+    <property name="ep.UseMessageListener" value="${adapter-config.endpoint.spec.UseMessageListener}"/>
+    <property name="ep.MessageSelector" value="${adapter-config.endpoint.spec.MessageSelector}"/>
+    <property name="ep.PayloadType" value="${adapter-config.endpoint.spec.PayloadType}"/>
+    <property name="ep.QueueName" value="${adapter-config.endpoint.spec.QueueName}"/>
+    <property name="ep.ObjectFieldName" value="${adapter-config.endpoint.spec.ObjectFieldName}"/>
+    <property name="ep.PayloadHeaderRequired" value="${adapter-config.endpoint.spec.PayloadHeaderRequired}"/>
+    <property name="ep.RecipientList" value="${adapter-config.endpoint.spec.RecipientList}"/>
+    <property name="ep.Consumer" value="${adapter-config.endpoint.spec.Consumer}"/>
+    <echo file="${outputFile}" append="true"
+          message="${project.name},${jca.file.name},${adapter-config.name},${adapter-config.adapter},${cf.location},${ep.type},${ep.class},${ep.DestinationName},${ep.QueueName},${ep.DeliveryMode},${ep.TimeToLive},${ep.UseMessageListener},${ep.MessageSelector},${ep.PayloadType},${ep.ObjectFieldName},${ep.PayloadHeaderRequired},${ep.RecipientList},${ep.Consumer}${line.separator}"></echo>
+  </target>
+</project>
