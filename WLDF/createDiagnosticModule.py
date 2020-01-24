@@ -6,9 +6,9 @@
 # @version 1.0, 2019-10-08
 #
 #############################################################################
-# Modify these values as necessary
 import os,sys, traceback
 #
+# Modify these values as necessary
 adminHost=os.environ["ADM_HOST"]
 adminPort=os.environ["ADM_PORT"]
 admServerUrl = 't3://'+adminHost+':'+adminPort
