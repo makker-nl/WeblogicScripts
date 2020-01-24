@@ -87,7 +87,7 @@ def createJmsNotificationAction(diagModuleName, actionName, destination, connect
     print 'JMS NotificationAction '+actionName+' in '+diagModuleName+' already exists!'
   return jmsNtfAction
   
-
+#
 def createPolicy(diagModuleName, policyName, ruleType, ruleExpression, actions):  
   policiesActionsPath='/WLDFSystemResources/'+diagModuleName+'/WLDFResource/'+diagModuleName+'/WatchNotification/'+diagModuleName
   policiesPath=policiesActionsPath+'/Watches/'
@@ -99,7 +99,6 @@ def createPolicy(diagModuleName, policyName, ruleType, ruleExpression, actions):
     startEdit()
     cd(policiesActionsPath)
     policy=cmo.createWatch(policyName)
-    #cd('/WLDFSystemResources/TTDiagnostics/WLDFResource/TTDiagnostics/WatchNotification/TTDiagnostics/Watches/HiStuckThreads')
     policy.setEnabled(true)
     policy.setExpressionLanguage('EL')
     policy.setRuleType(ruleType)
@@ -109,7 +108,6 @@ def createPolicy(diagModuleName, policyName, ruleType, ruleExpression, actions):
     cd(policiesPath +policyName)
     set('Notifications', actions)
     schedule=getMBean(policiesPath +policyName+'/Schedule/'+policyName)
-    #cd('/WLDFSystemResources/TTDiagnostics/WLDFResource/TTDiagnostics/WatchNotification/TTDiagnostics/Watches/HiStuckThreads/Schedule/HiStuckThreads')
     schedule.setMinute('*')
     schedule.setSecond('*')
     schedule.setSecond('*/15')
