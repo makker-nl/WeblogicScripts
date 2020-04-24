@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!--Ant Build file to scan JCA files in a repository and list relvant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="ScanMDSReferences" default="all" basedir=".">
+  <property name="author" value="Martien van den Akker"/>
+  <property name="version" value="1.0"/>
+  <property environment="env"/>
+  <property file="build.properties"/>
+  <path id="mds.source">
+    <dirset dir="${svnRoot}/MDS">
+      <!-- Volgende patternset bevat folders die wel in WSDLs die (nog) moeten worden verplaatst of verwijderd. -->
+      <patternset id="mds.wsdls">
+        <include name="**/apps/WSDLs/**"/>
+        <exclude name="**/apps/WSDLs"/>
+        <exclude name="**/.adf/**"/>
+        <exclude name="**/.data/**"/>
+        <exclude name="**/src/**"/>
+      </patternset>
+      <!-- Volgende patternset bevat folders die wel in apps/Extern, maar niet onder Applicaties of Keten -->
+      <patternset id="mds.extern">
+        <include name="**/apps/Extern/**"/>
+        <exclude name="**/apps/Extern"/>
+        <exclude name="**/Applicaties/**"/>
+        <exclude name="**/Keten/**"/>
+        <exclude name="**/.adf/**"/>
+        <exclude name="**/.data/**"/>
+        <exclude name="**/src/**"/>
+      </patternset>
+    </dirset>
+  </path>
+  <fileset id="project.files" dir="${svnRoot}">
+    <patternset id="project.files.patternset">
+      <include name="**/*.wsdl"/>
+      <include name="**/*.xsd"/>
+      <include name="**/*.bpel"/>
+      <include name="**/composite.xml"/>
+      <exclude name="**/MDS/apps/**"/>
+    </patternset>
+  </fileset>
+  <fileset id="mockProject.files" dir="${svnMockRoot}">
+    <patternset id="mockProject.files.patternset">
+      <include name="**/*.wsdl"/>
+      <include name="**/*.xsd"/>
+      <include name="**/*.bpel"/>
+      <include name="**/composite.xml"/>
+      <exclude name="**/MDS/apps/**"/>
+    </patternset>
+  </fileset>
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${ant-contrib.jar}"/>
+    </classpath>
+  </taskdef>
+  <!-- Initialisatie -->
+  <target name="clean" description="Clean the temp folder">
+    <delete dir="${tempDir}"/>
+    <mkdir dir="${tempDir}"/>
+  </target>
+  <!-- Perform all -->
+  <target name="all" description="Scan All SOA applications" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <echo>SVN_ROOT=${svnRoot}.</echo>
+    <echo file="${outputFileRefs}" append="false"
+          message="MDS Folder,oramds path,Application Name,Project Name,Project File${line.separator}"></echo>
+    <echo file="${outputFileNoRefs}" append="false" message="MDS Folder,oramds path${line.separator}"></echo>
+    <foreach param="mds.folder" target="processMDSFolder" delimiter=';' inheritall="true">
+      <path refid="mds.source"/>
+    </foreach>
+  </target>
+  <target name="processMDSFolder">
+    <echo>${mds.folder}</echo>
+    <getMDSPath mdsfolderpath="${mds.folder}" svnrootpath="${svnRoot}" property="mds.path"/>
+    <stripSvnRoot path="${mds.folder}" svnrootpath="${svnRoot}" property="mds.folder.rel.path"/>
+    <echo>${mds.folder.rel.path}</echo>
+    <foreach param="project.file" target="processProjectFile" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="matched.project.files" dir="${svnRoot}">
+          <patternset refid="project.files.patternset"/>
+          <contains text="${mds.path}"/>
+        </fileset>
+      </path>
+    </foreach>
+    <foreach param="project.file" target="processMockProjectFile" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="matched.mockProject.files" dir="${svnMockRoot}">
+          <patternset refid="mockProject.files.patternset"/>
+          <contains text="${mds.path}"/>
+        </fileset>
+      </path>
+    </foreach>
+    <condition property="mds.folder.used" else="false" value="true">
+      <resourcecontains resource="${outputFileRefs} " substring="${mds.folder.rel.path}"/>
+    </condition>
+    <echo>Used: ${mds.folder.used} </echo>
+    <if>
+      <equals arg1="${mds.folder.used}" arg2="false"/>
+      <then>
+        <echo file="${outputFileNoRefs}" append="true" message="${mds.folder.rel.path},${mds.path}${line.separator}"></echo>
+      </then>
+      <else/>
+    </if>
+  </target>
+  <target name="processProjectFile">
+    <stripSvnRoot path="${project.file}" svnrootpath="${svnRoot}" property="project.file.rel.path"/>
+    <antcall target="processProjectFileImpl" inheritall="true"/>
+  </target>
+  <target name="processMockProjectFile">
+    <stripSvnRoot path="${project.file}" svnrootpath="${svnMockRoot}" property="project.file.rel.path"/>
+    <antcall target="processProjectFileImpl" inheritall="true"/>
+  </target>
+  <target name="processProjectFileImpl">
+    <extractApplicationProject projectfilepath="${project.file.rel.path}" applicationproperty="application.name"
+                               projectproperty="project.name" projectfilesubpathproperty="project.file.sub.path"/>
+    <echo>--&gt; ${project.file} - ${project.file.rel.path} - ${application.name} - ${project.name}</echo>
+    <echo file="${outputFileRefs}" append="true"
+          message="${mds.folder.rel.path},${mds.path},${application.name},${project.name},${project.file.sub.path}${line.separator}"></echo>
+  </target>
+  <scriptdef name="extractApplicationProject" language="javascript"
+             description="Strip the Application file/folder path.">
+    <attribute name="projectfilepath"/>
+    <attribute name="applicationproperty"/>
+    <attribute name="projectproperty"/>
+    <attribute name="projectfilesubpathproperty"/>
+    <![CDATA[
+       var projectFilePath = attributes.get("projectfilepath");
+       //Flip backslashes
+       projectFilePath=projectFilePath.replace(/\\/g,"/");              
+       var indexOfPathSep = projectFilePath.indexOf("/");
+       var applicationName = projectFilePath.substring(0,indexOfPathSep);
+       projectFilePath = projectFilePath.substring(indexOfPathSep+1);
+       if (applicationName=="Keten"){
+         indexOfPathSep = projectFilePath.indexOf("/");
+         applicationName = applicationName+"/"+projectFilePath.substring(0,indexOfPathSep);
+         projectFilePath = projectFilePath.substring(indexOfPathSep+1);
+       }
+       indexOfPathSep = projectFilePath.indexOf("/");
+       var projectName = projectFilePath.substring(0,indexOfPathSep);
+       var projectFileSubPath=projectFilePath.substring(indexOfPathSep+1);      
+       project.setProperty(attributes.get("applicationproperty"), applicationName);
+       project.setProperty(attributes.get("projectproperty"), projectName);
+       project.setProperty(attributes.get("projectfilesubpathproperty"), projectFileSubPath);       
+     ]]>
+  </scriptdef>
+  <scriptdef name="getMDSPath" language="javascript" description="Get the oramds:/ reference from an mdsFolderPath.">
+    <attribute name="mdsFolderPath"/>
+    <attribute name="svnrootpath"/>
+    <attribute name="property"/>
+    <![CDATA[
+       var mdsFolderPath = attributes.get("mdsfolderpath");
+       var svnRootPath = attributes.get("svnrootpath");
+       var mdsFolderPathLength = mdsFolderPath.length();
+       var svnRootPathLength = svnRootPath.length();
+       var mdsRelativePath=mdsFolderPath.substring(svnRootPathLength);
+       mdsRelativePath=mdsRelativePath.replace("\\MDS\\","oramds:/");
+       mdsRelativePath=mdsRelativePath.replace(/\\/g,"/");
+       project.setProperty(attributes.get("property"), mdsRelativePath);
+     ]]>
+  </scriptdef>
+  <scriptdef name="stripSvnRoot" language="javascript" description="Strip the svn root from the file/folder path.">
+    <attribute name="path"/>
+    <attribute name="svnrootpath"/>
+    <attribute name="property"/>
+    <![CDATA[
+       var path = attributes.get("path");
+       var svnRootPath = attributes.get("svnrootpath");
+       var pathLength = path.length();
+       var svnRootPathLength = svnRootPath.length();
+       var relativePath=path.substring(svnRootPathLength+1);
+       relativePath=relativePath.replace(/\\/g,"/");
+       project.setProperty(attributes.get("property"), relativePath);
+     ]]>
+  </scriptdef>
+  <scriptdef name="updateProperty" language="javascript" description="Update a property">
+    <attribute name="name"/>
+    <attribute name="value"/>
+    project.setProperty(attributes.get("name"), attributes.get("value"));
+  </scriptdef>
+</project>

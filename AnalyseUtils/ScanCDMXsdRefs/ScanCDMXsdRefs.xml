@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!--Ant Build file to scan for references to ITE Xsd in a repository and list relvant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="ScanIteXsdRefs" default="all" basedir=".">
+    <property name="author" value="Martien van den Akker"/>
+    <property name="version" value="1.0"/>
+    <property environment="env"/>
+    <property file="build.properties"/>
+    <taskdef resource="net/sf/antcontrib/antlib.xml">
+        <classpath>
+            <pathelement location="${ant-contrib.jar}"/>
+        </classpath>
+    </taskdef>
+    <!-- Initialisatie -->
+    <target name="clean" description="Clean the temp folder">
+        <delete dir="${tempDir}"/>
+        <mkdir dir="${tempDir}"/>
+    </target>
+    <!-- Perform all -->
+    <target name="all" description="Scan All SOA applications" depends="clean">
+        <echo>FMW_HOME=${fmw.home}.</echo>
+        <antcall target="scanProjects" inheritall="true" inheritrefs="true"/>
+        <!-- Check all ITE Elements/ComplexTypes -->
+        <antcall target="filterReferencedXsdObjects" inheritall="true" inheritrefs="true"/>
+        <!-- Scan XSL files -->
+        <antcall target="scanXslFilesForITERefs" inheritall="true" inheritrefs="true"/>
+    </target>
+    <target name="scanProjects"
+            description="Scan projects for files with references to ITE xsd, through the namespace.">
+        <echo file="${cdm.references.csv}" append="false"
+              message="Project Folder,Project Name,Sub folder,Referencing File,File Type,Component List${line.separator}"></echo>
+        <foreach param="project.file" target="handleProject" delimiter=';' inheritall="true">
+            <path>
+                <fileset id="dist.contents" dir="${svnRoot}" includes="**/*.jpr"/>
+            </path>
+        </foreach>
+    </target>
+    <target name="handleProject">
+        <echo message="projectFile: ${project.file}"></echo>
+        <dirname property="project.dir" file="${project.file}"/>
+        <echo message="project dir: ${project.dir}"></echo>
+        <basename property="project.name" file="${project.file}" suffix=".jpr"/>
+        <foreach param="project.artefact" target="handleProjectArtefact" delimiter=";" inheritall="true">
+            <path>
+                <fileset id="dist.contents" dir="${project.dir}"
+                         includes="**/*.wsdl,**/*.xsd,**/*.xsl,**/*.bpel,**/*.sbpel,**/composcdm.xml"/>
+            </path>
+        </foreach>
+    </target>
+    <target name="handleProjectArtefact">
+        <basename property="project.artefact.name" file="${project.artefact}"/>
+        <getFileNameExtension filename="${project.artefact.name}" extensionprop="project.artefact.extension"/>
+        <dirname property="project.artefact.dir" file="${project.artefact}"/>
+        <property name="project.artefact.rel.dir" value="${project.artefact.dir}" relative="true"
+                  basedir="${project.dir}"/>
+        <echo message="Project Artefact name: ${project.artefact}, ${project.artefact.rel.dir}"></echo>
+        <condition property="cdm.xsd.used" else="false" value="true">
+            <resourcecontains resource="${project.artefact} " substring="${cdm.xsd}"/>
+        </condition>
+        <echo>Used: ${cdm.xsd.used} </echo>
+        <if>
+            <equals arg1="${cdm.xsd.used}" arg2="true"/>
+            <then>
+                <if>
+                    <or>
+                        <equals arg1="${project.artefact.extension}" arg2="wsdl"/>
+                        <equals arg1="${project.artefact.extension}" arg2="xsd"/>
+                    </or>
+                    <then>
+                        <loadfile property="project.artefact.content" srcfile="${project.artefact}"/>
+                        <getNamespacePrefix projectartefact="${project.artefact.content}" namespace="${cdm.ns}"
+                                            namespaceprefixprop="cdm.prefix"/>
+                        <echo>cdm.prefix: [ ${cdm.prefix} ]</echo>
+                        <getNsPfxReference projectartefact="${project.artefact.content}" namespaceprefix="${cdm.prefix}"
+                                           componentlistprop="component.list"/>
+                        <echo>cdm.component list: [ ${component.list} ]</echo>
+                    </then>
+                </if>
+                <echo file="${cdm.references.csv}" append="true"
+                      message="${project.dir},${project.name},${project.artefact.rel.dir},${project.artefact.name},${project.artefact.extension},${component.list}${line.separator}"></echo>
+            </then>
+            <else/>
+        </if>
+    </target>
+    <target name="filterReferencedXsdObjects">
+        <loadfile property="cdm.xsdObjects" srcfile="${cdm.xsdObjects.csv}"/>
+        <foreach param="xsdObjectLine" list="${cdm.xsdObjects}" target="handleXsdObjectLine"
+                 delimiter="${line.separator}"/>
+    </target>
+    <target name="handleXsdObjectLine">
+        <script language="javascript">
+  arr = project.getProperty('xsdObjectLine').split(',');
+  project.setProperty('xsdObj.nr', arr[0]);
+  project.setProperty('xsdObj.type', arr[1]);
+  project.setProperty('xsdObj.name', arr[2]);  
+ </script>
+        <echo>Xsd Object: ${xsdObj.nr} - ${xsdObj.type} - ${xsdObj.name}</echo>
+        <if>
+            <equals arg1="${xsdObj.nr}" arg2="Nr"/>
+            <then>
+                <echo file="${cdm.xsdObjects.filtered.csv}" append="false" message="${xsdObjectLine}${line.separator}"></echo>
+            </then>
+            <else>
+                <condition property="cdm.xsdObject.used" value="true" else="false">
+                    <resourcecontains resource="${cdm.references.csv}" substring="${xsdObj.name}"/>
+                </condition>
+                <echo>Used: ${cdm.xsdObject.used}</echo>
+                <if>
+                    <equals arg1="${cdm.xsdObject.used}" arg2="true"/>
+                    <then>
+                        <echo file="${cdm.xsdObjects.filtered.csv}" append="true"
+                              message="${xsdObj.nr},${xsdObj.type},${xsdObj.name}${line.separator}"></echo>
+                    </then>
+                    <else/>
+                </if>
+            </else>
+        </if>
+    </target>
+    <target name="scanXslFilesForITERefs" description="Scan XSL files for references to ITE components">
+        <loadfile property="cdm.xsdObjects" srcfile="${cdm.xsdObjects.csv}"/>
+        <echo file="${xsl.cdm.references.csv}" append="false"
+              message="XSL Folder,XSL File,ITE Object List${line.separator}"></echo>
+        <getIteObjectList iteobjects="${cdm.xsdObjects}" objectlistprop="cdm.object.list"/>
+        <echo>Ite object list: [${cdm.object.list}]</echo>
+        <foreach param="xsl.file" target="handleXsl" delimiter=';' inheritall="true">
+            <path>
+                <fileset id="dist.contents" dir="${svnRoot}" includes="**/*.xsl"/>
+            </path>
+        </foreach>
+    </target>
+    <target name="handleXsl">
+        <echo message="xslFile: ${xsl.file}"></echo>
+        <dirname property="xsl.dir" file="${xsl.file}"/>
+        <basename property="xsl.basename" file="${xsl.file}"/>
+        <echo message="xsl dir: ${xsl.dir}, file: ${xsl.basename}"></echo>
+        <loadfile property="xsl.file.content" srcfile="${xsl.file}"/>
+        <getXslIteReferences xslcontent="${xsl.file.content}" iteobjectlist="${cdm.object.list}"
+                             resultlistprop="xsl.cdm.object.list"/>
+        <if>
+            <not>
+                <equals arg1="${xsl.cdm.object.list}" arg2=""/>
+            </not>
+            <then>
+                <echo>Referenced ite object list: [${xsl.cdm.object.list}]</echo>
+                <echo file="${xsl.cdm.references.csv}" append="true"
+                      message="${xsl.dir},${xsl.basename},${xsl.cdm.object.list}${line.separator}"></echo>
+            </then>
+            <else>
+                <echo>Referenced ite object list is empty.</echo>
+            </else>
+        </if>
+    </target>
+    <scriptdef name="getFileNameExtension" language="javascript" description="Get the extension of a filename.">
+        <attribute name="filename"/>
+        <attribute name="extensionprop"/>
+        <![CDATA[
+       var filename = attributes.get("filename");       
+       var extensionPos = filename.indexOf(".");
+       var extension ="";
+       if (extensionPos>-1){
+         extension = filename.substring(extensionPos+1);
+       }       
+       project.setProperty(attributes.get("extensionprop"), extension);
+     ]]>
+    </scriptdef>
+    <scriptdef name="getNamespacePrefix" language="javascript"
+               description="Find the namespace prefix of namespace in xml content.">
+        <attribute name="projectartefact"/>
+        <attribute name="namespace"/>
+        <attribute name="namespaceprefixprop"/>
+        <![CDATA[
+       var projectArtefact = attributes.get("projectartefact");
+       var namespace  = attributes.get("namespace");
+       var namespacePos = projectArtefact.indexOf(namespace);
+       var namespacePrefix ="";
+       if (namespacePos>-1){
+         namespacePrefix = projectArtefact.substring(0,namespacePos);
+         var xmlnsPos=namespacePrefix.lastIndexOf("xmlns");
+         namespacePrefix = namespacePrefix.substring(xmlnsPos);
+         var colonPos=namespacePrefix.indexOf(":");
+         var equalsPos=namespacePrefix.indexOf("=");
+         namespacePrefix = namespacePrefix.substring(colonPos+1,equalsPos);
+       }       
+       project.setProperty(attributes.get("namespaceprefixprop"), namespacePrefix);
+     ]]>
+    </scriptdef>
+    <scriptdef name="getNsPfxReference" language="javascript"
+               description="Build list of components referencing the namespace prefix.">
+        <attribute name="projectartefact"/>
+        <attribute name="namespaceprefix"/>
+        <attribute name="componentlistprop"/>
+        <![CDATA[
+       var projectArtefact = attributes.get("projectartefact");
+       var namespacePrefix  = attributes.get("namespaceprefix");
+       var namespacePrefixRef  = namespacePrefix.concat(":")
+       var namespacePos = projectArtefact.indexOf(namespacePrefixRef);
+       var componentList ="";
+       while (namespacePos>-1){
+         var component = projectArtefact.substring(0, namespacePos);
+         var startComponent = component.lastIndexOf('<');
+         component=projectArtefact.substring(startComponent);
+         var endComponent=component.indexOf('>');
+         component=component.substring(0,endComponent+1);
+         component=component.replace(/\s+/g, ' ');
+         if (componentList.indexOf(component)==-1){
+           if (componentList.length>0){
+             componentList=componentList.concat("|",component);
+           } else {
+             componentList=componentList.concat(component);
+           }
+         }
+         projectArtefact=projectArtefact.substring(namespacePos+namespacePrefixRef.length);
+         namespacePos = projectArtefact.indexOf(namespacePrefixRef);
+       }       
+       project.setProperty(attributes.get("componentlistprop"), componentList);
+     ]]>
+    </scriptdef>
+    <scriptdef name="getXslIteReferences" language="javascript"
+               description="Build list of ITE objects referenced by the xsl file.">
+        <attribute name="xslcontent"/>
+        <attribute name="iteobjectlist"/>
+        <attribute name="resultlistprop"/>
+        <![CDATA[
+       var xslContent = attributes.get("xslcontent");
+       var iteObjectCsv = attributes.get("iteobjectlist");
+       var iteObjectList = iteObjectCsv.split(",");
+       var resultList ="";
+       for (idx=0;idx<iteObjectList.length;idx++){
+         var objectName = iteObjectList[idx];
+         if(xslContent.indexOf(objectName)>=0){
+           if (resultList==""){
+             resultList=objectName;
+           } else {
+             resultList=resultList.concat("|",objectName);
+           }
+         }
+       }
+       project.setProperty(attributes.get("resultlistprop"), resultList);
+     ]]>
+    </scriptdef>
+    <scriptdef name="getIteObjectList" language="javascript"
+               description="Build comma separated list of ITE XSD Objects from iteobjects file content.">
+        <attribute name="iteobjects"/>
+        <attribute name="objectlistprop"/>
+        <![CDATA[
+       var iteObjects  = attributes.get("iteobjects");
+       var objectNameList ="";
+       var posLineEnd=iteObjects.indexOf("\n");
+       var posLineStart=0;
+       while (posLineEnd>=0){
+         var objectLine=iteObjects.substring(posLineStart,posLineEnd);
+         if (!objectLine.startsWith("Nr")){           
+           var iteObjectLineList = objectLine.split(',');
+           var objectName=iteObjectLineList[2];
+           if (objectNameList==""){
+             objectNameList=objectName;
+           } else {
+             objectNameList=objectNameList.concat(",",objectName);
+           }
+         } 
+         posLineStart=posLineEnd+1;
+         posLineEnd=iteObjects.indexOf("\n", posLineStart);
+       }
+       project.setProperty(attributes.get("objectlistprop"), objectNameList);
+     ]]>
+    </scriptdef>
+</project>
