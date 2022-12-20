@@ -11,38 +11,61 @@
     </classpath>
   </taskdef>
   <!-- Initialisation -->
-  <target name="clean" description="Clean the temp folder">
-     
-  </target>
+  <target name="clean" description="Clean the temp folder"></target>
   <!-- Perform all  
   List over all SOA Applications
   -->
   <target name="all" description="Scan All SOA applications" depends="clean">
     <echo>FMW_HOME=${fmw.home}.</echo>
-    <foreach list="${appsfolders}" param="application" target="handleApplication"/>
+    <echo message=". Copy MDS content from ${source.mds.apps} to ${target.mds.apps}"></echo>
+    <copy todir="${target.mds.apps}">
+      <fileset dir="${source.mds.apps}" includes="**"></fileset>
+    </copy>
+    <foreach list="${soa.apps.folders}" param="application" target="handleApplication"/>
+  </target>
+  <!-- Copy MDS Content -->
+  <target name="copyMDS" description="Copy the MDS apps folder" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <echo message=". Copy MDS apps content from ${source.mds.apps} to ${target.mds}"></echo>
+    <copy todir="${target.mds.apps}">
+      <fileset dir="${source.mds.apps}" includes="**"></fileset>
+    </copy>
+    <foreach list="${soa.apps.folders}" param="application" target="handleApplication"/>
   </target>
   <!-- Handle a Single Application -->
   <target name="handleApplication">
-    <property name="applSourcePath" value="${mdsDeployedComposites}/${application}"/>
-    <property name="applTargetPath" value="${targetFolder}/${application}"/>
-    <echo message=". ${application} Source: ${applSourcePath}"></echo>
-    <echo message=". ${application} Target: ${applTargetPath}"></echo>
-    <mkdir dir="${applTargetPath}"/>
-    <property name="tgt.jws.file" value="${targetFolder}/${application}/${application}.jws"/>
-    <echo message=".. Copy ${templateJwsFile} to ${tgt.jws.file}."></echo>
-    <copy file="${templateJwsFile}" tofile="${tgt.jws.file}" overwrite="true">
+    <property name="appl.source.path" value="${soa.deployed.composites}/${application}"/>
+    <property name="appl.target.path" value="${target.folder}/${application}"/>
+    <echo message=". ${application} Source: ${appl.source.path}"></echo>
+    <echo message=". ${application} Target: ${appl.target.path}"></echo>
+    <mkdir dir="${appl.target.path}"/>
+    <property name="tgt.jws.file" value="${target.folder}/${application}/${application}.jws"/>
+    <echo message=".. Copy ${template.jws} to ${tgt.jws.file}."></echo>
+    <copy file="${template.jws}" tofile="${tgt.jws.file}" overwrite="true">
       <filterchain>
         <expandproperties/>
       </filterchain>
     </copy>
     <foreach param="composite.file" target="handleProject" delimiter=';' inheritall="true">
       <path>
-        <fileset id="dist.contents" dir="${applSourcePath}" includes="**/composite.xml"/>
+        <fileset id="dist.contents" dir="${appl.source.path}" includes="**/composite.xml"/>
       </path>
     </foreach>
     <echo message=".. Finish ${tgt.jws.file}."></echo>
     <echo file="${tgt.jws.file}" append="true" message="   &lt;/list>"></echo>
     <echo file="${tgt.jws.file}" append="true" message="&lt;/jws:workspace>"></echo>
+    <property name="tgt.adf.metadata.fldr" value="${target.folder}/${application}/${target.adf.metadata.sfldr}"/>
+    <echo message=".. Copy ADF Metadata ${template.adf.config} to ${tgt.adf.metadata.fldr}."></echo>
+    <mkdir dir="${tgt.adf.metadata.fldr}"/>
+    <copy file="${template.adf.config}" todir="${tgt.adf.metadata.fldr}" overwrite="true"/>
+    <property name="tgt.jws.metadata.fldr" value="${target.folder}/${application}/${target.jws.metadata.sfldr}"/>
+    <echo message=".. Copy JPS Metadata ${template.jps.config} to ${tgt.jws.metadata.fldr}."></echo>
+    <mkdir dir="${tgt.jws.metadata.fldr}"/>
+    <copy file="${template.jps.config}" todir="${tgt.jws.metadata.fldr}" overwrite="true">
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </copy>
   </target>
   <!-- Handle a Single Project -->
   <target name="handleProject">
@@ -53,14 +76,14 @@
     <echo message=".. project dir name: ${project.dir.name}"></echo>
     <getProjectNameFromDir projectdirname="${project.dir.name}" projectnameproperty="project.name"/>
     <echo message=".. project name: ${project.name}"></echo>
-    <property name="tgt.project.dir" value="${applTargetPath}/${project.name}"/>
+    <property name="tgt.project.dir" value="${appl.target.path}/${project.name}"/>
     <property name="tgt.project.file" value="${tgt.project.dir}/${project.name}.jpr"/>
     <echo message=".. Target project dir: ${tgt.project.dir}"></echo>
     <property name="tgt.soa.dir" value="${tgt.project.dir}/SOA"/>
     <echo message=".. Target SOA dir: ${tgt.soa.dir}"></echo>
     <mkdir dir="${tgt.soa.dir}"/>
-    <echo message=".. Copy ${templateJprFile} to ${tgt.project.file}."></echo>
-    <copy file="${templateJprFile}" tofile="${tgt.project.file}" overwrite="true">
+    <echo message=".. Copy ${template.jpr} to ${tgt.project.file}."></echo>
+    <copy file="${template.jpr}" tofile="${tgt.project.file}" overwrite="true">
       <filterchain>
         <expandproperties/>
       </filterchain>
@@ -73,7 +96,7 @@
     </copy>
     <echo message=".. Add project to ${tgt.jws.file}"></echo>
     <echo file="${tgt.jws.file}" append="true"
-          message='&lt;hash>&lt;url n="URL" path="${project.name}/${project.name}.jpr"/&gt; &lt;/hash>'></echo>
+          message='&lt;hash>&lt;url n="URL" path="${project.name}/${project.name}.jpr"/> &lt;/hash>'></echo>
   </target>
   <!-- strip the revision from the project folder, resulting into the project name -->
   <scriptdef name="getProjectNameFromDir" language="javascript" description="Strip ProjectName from the folder name.">
