@@ -17,20 +17,20 @@
   -->
   <target name="all" description="Scan All SOA applications" depends="clean">
     <echo>FMW_HOME=${fmw.home}.</echo>
-    <echo message=". Copy MDS content from ${source.mds.apps} to ${target.mds.apps}"></echo>
-    <copy todir="${target.mds.apps}">
-      <fileset dir="${source.mds.apps}" includes="**"></fileset>
-    </copy>
+    <antcall target="copyMDS" inheritall="true" />
     <foreach list="${soa.apps.folders}" param="application" target="handleApplication"/>
   </target>
   <!-- Copy MDS Content -->
   <target name="copyMDS" description="Copy the MDS apps folder" depends="clean">
     <echo>FMW_HOME=${fmw.home}.</echo>
-    <echo message=". Copy MDS apps content from ${source.mds.apps} to ${target.mds}"></echo>
+    <echo message=". Copy MDS apps content from ${source.mds.apps} to ${target.mds.apps}"></echo>
     <copy todir="${target.mds.apps}">
       <fileset dir="${source.mds.apps}" includes="**"></fileset>
     </copy>
-    <foreach list="${soa.apps.folders}" param="application" target="handleApplication"/>
+    <echo message=". Create SOA MDS folder: ${soa.mds}"/>
+    <mkdir dir ="${soa.mds}"  />
+    <echo message=". Create Symlink apps in ${soa.mds} to ${target.mds.apps}"/>
+    <symlink link="${soa.mds}/apps" resource="${target.mds.apps}" overwrite="true" />
   </target>
   <!-- Handle a Single Application -->
   <target name="handleApplication">
