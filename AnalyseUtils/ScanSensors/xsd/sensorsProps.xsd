@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:snr="http://xmlns.darwin-it.nl/bpel/sensor"
+            targetNamespace="http://xmlns.darwin-it.nl/bpel/sensor" elementFormDefault="qualified">
+  <xsd:element name="sensors">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="sensor" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="activityConfig">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="variable" maxOccurs="unbounded">
+                      <xsd:complexType>
+                        <xsd:attribute name="outputDataType" type="xsd:string"/>
+                        <xsd:attribute name="outputNamespace" type="xsd:string"/>
+                        <xsd:attribute name="target" type="xsd:string"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                  <xsd:attribute name="evalTime" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="variableList" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+            </xsd:sequence>
+            <xsd:attribute name="sensorName" type="xsd:string"/>
+            <xsd:attribute name="classname" type="xsd:string"/>
+            <xsd:attribute name="kind" type="xsd:string"/>
+            <xsd:attribute name="target" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="sensorList" maxOccurs="1" minOccurs="0" type="xsd:string"/>
+      </xsd:sequence>
+      <xsd:attribute name="targetNamespace" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

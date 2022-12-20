@@ -1,0 +1,1 @@
+wlst.cmd deploySharedFolderWar.py -loadProperties DefaultServer.properties

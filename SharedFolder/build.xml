@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="SharedFolder" basedir="." default="build">
+   <property file="build.properties" />
+   <!-- Clean & Init -->
+   <target name="clean">
+      <echo>Delete build and dist folder</echo>
+      <delete dir="${build.dir}" />
+      <delete dir="${dist.dir}" />
+   </target>
+   <target name="init" depends="clean">
+      <echo>Create build and dist folder</echo>
+      <mkdir dir="${build.dir}" />
+      <mkdir dir="${dist.dir}" />
+   </target>
+   <!-- war the project -->
+   <target name="war">
+      <property name="war.dir" value="${dist.dir}/${ant.project.name}" />
+      <property name="war.file" value="${war.dir}/${ant.project.name}.war" />
+      <echo>Create war file ${war.file} from ${build.dir}</echo>
+      <mkdir dir="${war.dir}" />
+      <jar destfile="${war.file}" basedir="${build.dir}">
+         <manifest />
+      </jar>
+   </target>
+   <!-- Build the war file -->
+   <target name="build" depends="init">
+      <echo>Copy ${src.dir} to  ${build.dir}, expanding properties</echo>
+      <copy todir="${build.dir}">
+         <fileset dir="${src.dir}" />
+         <filterchain>
+            <expandproperties />
+         </filterchain>
+      </copy>
+      <ant target="war" />
+   </target>
+</project>

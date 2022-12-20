@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!--Ant Build file to scan JCA files in a repository and list relvant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="scanJCAFiles" default="all" basedir=".">
+  <property name="author" value="Martien van den Akker"/>
+  <property name="version" value="1.0"/>
+  <property environment="env"/>
+  <property file="build.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${ant-contrib.jar}"/>
+    </classpath>
+  </taskdef>
+  <!-- Initialisation -->
+  <target name="clean" description="Clean the temp folder">
+     
+  </target>
+  <!-- Perform all  
+  List over all SOA Applications
+  -->
+  <target name="all" description="Scan All SOA applications" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <foreach list="${appsfolders}" param="application" target="handleApplication"/>
+  </target>
+  <!-- Handle a Single Application -->
+  <target name="handleApplication">
+    <property name="applSourcePath" value="${mdsDeployedComposites}/${application}"/>
+    <property name="applTargetPath" value="${targetFolder}/${application}"/>
+    <echo message=". ${application} Source: ${applSourcePath}"></echo>
+    <echo message=". ${application} Target: ${applTargetPath}"></echo>
+    <mkdir dir="${applTargetPath}"/>
+    <property name="tgt.jws.file" value="${targetFolder}/${application}/${application}.jws"/>
+    <echo message=".. Copy ${templateJwsFile} to ${tgt.jws.file}."></echo>
+    <copy file="${templateJwsFile}" tofile="${tgt.jws.file}" overwrite="true">
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </copy>
+    <foreach param="composite.file" target="handleProject" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${applSourcePath}" includes="**/composite.xml"/>
+      </path>
+    </foreach>
+    <echo message=".. Finish ${tgt.jws.file}."></echo>
+    <echo file="${tgt.jws.file}" append="true" message="   &lt;/list>"></echo>
+    <echo file="${tgt.jws.file}" append="true" message="&lt;/jws:workspace>"></echo>
+  </target>
+  <!-- Handle a Single Project -->
+  <target name="handleProject">
+    <echo message=".. Composite: ${composite.file}"></echo>
+    <dirname property="src.project.dir" file="${composite.file}"/>
+    <echo message=".. Source project dir: ${src.project.dir}"></echo>
+    <basename property="project.dir.name" file="${src.project.dir}"/>
+    <echo message=".. project dir name: ${project.dir.name}"></echo>
+    <getProjectNameFromDir projectdirname="${project.dir.name}" projectnameproperty="project.name"/>
+    <echo message=".. project name: ${project.name}"></echo>
+    <property name="tgt.project.dir" value="${applTargetPath}/${project.name}"/>
+    <property name="tgt.project.file" value="${tgt.project.dir}/${project.name}.jpr"/>
+    <echo message=".. Target project dir: ${tgt.project.dir}"></echo>
+    <property name="tgt.soa.dir" value="${tgt.project.dir}/SOA"/>
+    <echo message=".. Target SOA dir: ${tgt.soa.dir}"></echo>
+    <mkdir dir="${tgt.soa.dir}"/>
+    <echo message=".. Copy ${templateJprFile} to ${tgt.project.file}."></echo>
+    <copy file="${templateJprFile}" tofile="${tgt.project.file}" overwrite="true">
+      <filterchain>
+        <expandproperties/>
+      </filterchain>
+    </copy>
+    <echo message=".. Copy ${src.project.dir} to ${tgt.soa.dir}."></echo>
+    <copy todir="${tgt.soa.dir}">
+      <fileset dir="${src.project.dir}" includes="**">
+        <exclude name="soaconfigplan.xml"/>
+      </fileset>
+    </copy>
+    <echo message=".. Add project to ${tgt.jws.file}"></echo>
+    <echo file="${tgt.jws.file}" append="true"
+          message='&lt;hash>&lt;url n="URL" path="${project.name}/${project.name}.jpr"/&gt; &lt;/hash>'></echo>
+  </target>
+  <!-- strip the revision from the project folder, resulting into the project name -->
+  <scriptdef name="getProjectNameFromDir" language="javascript" description="Strip ProjectName from the folder name.">
+    <attribute name="projectdirname"/>
+    <attribute name="projectnameproperty"/>
+    <![CDATA[
+       var projectDirName = attributes.get("projectdirname");
+       index = projectDirName.lastIndexOf("_");
+       projectName = projectDirName.substring(0, index);
+       project.setProperty(attributes.get("projectnameproperty"), projectName);       
+     ]]>
+  </scriptdef>
+</project>

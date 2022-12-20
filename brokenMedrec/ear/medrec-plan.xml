@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<deployment-plan xmlns="http://xmlns.oracle.com/weblogic/deployment-plan" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/weblogic/deployment-plan http://xmlns.oracle.com/weblogic/deployment-plan/1.0/deployment-plan.xsd" global-variables="false">
+  <application-name>applications</application-name>
+  <variable-definition>
+  </variable-definition>
+  <module-override>
+    <module-name>medrec.ear</module-name>
+    <module-type>ear</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-application</root-element>
+      <uri>META-INF/weblogic-application.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>application</root-element>
+      <uri>META-INF/application.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>wldf-resource</root-element>
+      <uri>META-INF/weblogic-diagnostics.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="true">
+      <root-element>persistence-configuration</root-element>
+      <uri>medrec-domain.jar!/META-INF/persistence-configuration.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>persistence</root-element>
+      <uri>medrec-domain.jar!/META-INF/persistence.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>common.jar</module-name>
+    <module-type>ejb</module-type>
+    <module-descriptor external="true">
+      <root-element>weblogic-ejb-jar</root-element>
+      <uri>META-INF/weblogic-ejb-jar.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>ejb-jar</root-element>
+      <uri>META-INF/ejb-jar.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>medrec-domain.jar</module-name>
+    <module-type>ejb</module-type>
+    <module-descriptor external="true">
+      <root-element>weblogic-ejb-jar</root-element>
+      <uri>META-INF/weblogic-ejb-jar.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>ejb-jar</root-element>
+      <uri>META-INF/ejb-jar.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="true">
+      <root-element>persistence-configuration</root-element>
+      <uri>META-INF/persistence-configuration.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>persistence</root-element>
+      <uri>META-INF/persistence.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>medrec-facade.jar</module-name>
+    <module-type>ejb</module-type>
+    <module-descriptor external="true">
+      <root-element>weblogic-ejb-jar</root-element>
+      <uri>META-INF/weblogic-ejb-jar.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>ejb-jar</root-element>
+      <uri>META-INF/ejb-jar.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>medrec-web.war</module-name>
+    <module-type>war</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-web-app</root-element>
+      <uri>WEB-INF/weblogic.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>web-app</root-element>
+      <uri>WEB-INF/web.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>medrec-jaxrpc-facade-broker.war</module-name>
+    <module-type>war</module-type>
+    <module-descriptor external="false">
+      <root-element>weblogic-web-app</root-element>
+      <uri>WEB-INF/weblogic.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>web-app</root-element>
+      <uri>WEB-INF/web.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>weblogic-webservices</root-element>
+      <uri>WEB-INF/weblogic-webservices.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>webservices</root-element>
+      <uri>WEB-INF/webservices.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>webservice-policy-ref</root-element>
+      <uri>WEB-INF/weblogic-webservices-policy.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <module-override>
+    <module-name>medrec-jaxws-facade-broker.war</module-name>
+    <module-type>war</module-type>
+    <module-descriptor external="true">
+      <root-element>weblogic-web-app</root-element>
+      <uri>WEB-INF/weblogic.xml</uri>
+      <hash-code>1256305894715</hash-code>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>web-app</root-element>
+      <uri>WEB-INF/web.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="true">
+      <root-element>weblogic-webservices</root-element>
+      <uri>WEB-INF/weblogic-webservices.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="false">
+      <root-element>webservices</root-element>
+      <uri>WEB-INF/webservices.xml</uri>
+    </module-descriptor>
+    <module-descriptor external="true">
+      <root-element>webservice-policy-ref</root-element>
+      <uri>WEB-INF/weblogic-webservices-policy.xml</uri>
+    </module-descriptor>
+  </module-override>
+  <config-root>/home/oracle/wls11g_trouble/work/applications</config-root>
+</deployment-plan>

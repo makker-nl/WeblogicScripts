@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!--Ant Build file to scan JCA files in a repository and list relvant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="scanSensors" default="all" basedir=".">
+  <property name="author" value="Martien van den Akker"/>
+  <property name="version" value="1.0"/>
+  <property environment="env"/>
+  <property file="build.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${ant-contrib.jar}"/>
+    </classpath>
+  </taskdef>
+  <!-- Initialisatie -->
+  <target name="clean" description="Clean the temp folder">
+    <delete dir="${tempDir}"/>
+    <mkdir dir="${tempDir}"/>
+  </target>
+  <!-- Perform all -->
+  <target name="all" description="Scan All SOA applications" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <echo file="${outputFile}" append="false"
+          message="Project Name,Sensor File,Sensor Action File,Sensor Name,Sensor Kind,Sensor Target,Sensor Variable List,Sensor Action Name,Sensor Action PublishType,Sensor Action PublishTarget${line.separator}"></echo>
+    <foreach param="project.file" target="handleProject" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${svnRoot}" includes="**/*.jpr"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="handleProject">
+    <echo message="projectFile: ${project.file}"></echo>
+    <dirname property="project.dir" file="${project.file}"/>
+    <echo message="project dir: ${project.dir}"></echo>
+    <basename property="project.name" file="${project.file}" suffix=".jpr"/>
+    <foreach param="sensor.file" target="handleSensors" delimiter=";" inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${project.dir}" includes="**/*_sensor.xml"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="handleSensors">
+    <basename property="sensor.file.name" file="${sensor.file}"/>
+    <dirname property="sensor.dir" file="${sensor.file}"/>
+    <property name="sensor.file.props" value="${tempDir}/${sensor.file.name}.props"/>
+    <!--getlength text="${sensor.file.name}" property="sensor.file.name.length"/-->
+    <getsensoractionfilename sensorfilename="${sensor.file.name}" property="sensorAction.file.name"/>
+    <property name="sensorAction.file" value="${sensor.dir}/${sensorAction.file.name}"/>
+    <property name="sensorAction.file.props" value="${tempDir}/${sensorAction.file.name}.props"/>
+    <echo message="Sensor File name: ${sensor.file.name}"></echo>
+    <echo message="Sensor Action file: ${sensorAction.file}"></echo>
+    <echo message="Sensor Action file name: ${sensorAction.file.name}"></echo>
+    <xslt style="${sensorPropsXsl}" in="${sensor.file}" out="${sensor.file.props}"/>
+    <xslt style="${sensorActionPropsXsl}" in="${sensorAction.file}" out="${sensorAction.file.props}"/>
+    <echo message="Load Sensor Properties: ${sensor.file.props}"></echo>
+    <!-- see https://ant.apache.org/manual/Tasks/xmlproperty.html -->
+    <xmlproperty file="${sensor.file.props}" collapseattributes="true"/>
+    <xmlproperty file="${sensorAction.file.props}" collapseattributes="true"/>
+    <echo message="Sensor List: ${sensors.sensorList}"></echo>
+    <foreach list="${sensors.sensorList}" param="sensor.name" target="handleSensor" delimiter=";" inheritall="true"></foreach>
+  </target>
+  <target name="handleSensor">
+    <echo message="Sensor: ${sensor.name}"></echo>
+    <propertycopy name="prp.sensorKind" from="sensors.${sensor.name}.kind"/>
+    <propertycopy name="prp.sensorTarget" from="sensors.${sensor.name}.target"/>
+    <propertycopy name="prp.sensorVariableList" from="sensors.${sensor.name}.variableList"/>
+    <propertycopy name="prp.sensorAction" from="sensors.${sensor.name}.actionName"/>
+    <propertycopy name="prp.sensorAction.publishType" from="sensors.${sensor.name}.action.publishType"/>
+    <propertycopy name="prp.sensorAction.publishTarget" from="sensors.${sensor.name}.action.publishTarget"/>    
+    <echo file="${outputFile}" append="true"
+          message="${project.name},${sensor.file.name},${sensorAction.file.name},${sensor.name},${prp.sensorKind},${prp.sensorTarget},${prp.sensorVariableList},${prp.sensorAction},${prp.sensorAction.publishType},${prp.sensorAction.publishTarget}${line.separator}"></echo>
+  </target>
+  <!-- Script to get the sensorAction filename based on the sensor filename. 
+  1. Cut the extension "_sensor.xml" from the filename.
+  2. Add "_sensorAction.xml" to the base filename.
+  -->
+  <scriptdef name="getsensoractionfilename" language="javascript">
+    <attribute name="sensorfilename"/>
+    <attribute name="property"/>
+    <![CDATA[
+       var sensorFilename = attributes.get("sensorfilename");
+       var sensorFilenameLength = sensorFilename.length();
+       var postfixLength = "_sensor.xml".length();
+       var sensorFilenameBaseLength=sensorFilenameLength-postfixLength;
+       var sensorActionFilename=sensorFilename.substring(0, sensorFilenameBaseLength)+"_sensorAction.xml";
+       project.setProperty(attributes.get("property"), sensorActionFilename);
+     ]]>
+  </scriptdef>
+  <!-- Example script to do a substring 
+    https://ant.apache.org/manual/Tasks/scriptdef.html
+    https://stackoverflow.com/questions/945374/how-to-pull-out-a-substring-in-ant
+    -->
+  <scriptdef name="substring" language="javascript">
+    <attribute name="text"/>
+    <attribute name="start"/>
+    <attribute name="end"/>
+    <attribute name="property"/>
+    <![CDATA[
+       var text = attributes.get("text");
+       var start = attributes.get("start");
+       var end = attributes.get("end") || text.length();
+       project.setProperty(attributes.get("property"), text.substring(start, end));
+     ]]>
+  </scriptdef>
+  <!-- Example script to do get the length of a text.
+    https://ant.apache.org/manual/Tasks/scriptdef.html
+    https://stackoverflow.com/questions/945374/how-to-pull-out-a-substring-in-ant
+    -->
+  <scriptdef name="getlength" language="javascript">
+    <attribute name="text"/>
+    <attribute name="property"/>
+    <![CDATA[
+       var text = attributes.get("text");
+       var length = text.length();
+       project.setProperty(attributes.get("property"), length);
+     ]]>
+  </scriptdef>
+</project>
