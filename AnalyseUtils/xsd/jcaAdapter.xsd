@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata"
+            targetNamespace="http://platform.integration.oracle/blocks/adapter/fw/metadata"
+            elementFormDefault="qualified">
+  <xsd:element name="adapter-config">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="connection-factory">
+          <xsd:complexType>
+            <xsd:attribute name="location" type="xsd:string"/>
+            <xsd:attribute name="adapterRef" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:choice>
+          <xsd:element name="endpoint-interaction">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="interaction-spec">
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element name="property" maxOccurs="unbounded">
+                        <xsd:complexType>
+                          <xsd:attribute name="name" type="xsd:string"/>
+                          <xsd:attribute name="value" type="xsd:string"/>
+                        </xsd:complexType>
+                      </xsd:element>
+                    </xsd:sequence>
+                    <xsd:attribute name="className" type="xsd:string"/>
+                  </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="input"/>
+              </xsd:sequence>
+              <xsd:attribute name="portType" type="xsd:string"/>
+              <xsd:attribute name="operation" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="endpoint-activation">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="activation-spec">
+                  <xsd:complexType>
+                    <xsd:sequence>
+                      <xsd:element name="property" maxOccurs="unbounded">
+                        <xsd:complexType>
+                          <xsd:attribute name="name" type="xsd:string"/>
+                          <xsd:attribute name="value" type="xsd:string"/>
+                        </xsd:complexType>
+                      </xsd:element>
+                    </xsd:sequence>
+                    <xsd:attribute name="className" type="xsd:string"/>
+                  </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="input"/>
+              </xsd:sequence>
+              <xsd:attribute name="portType" type="xsd:string"/>
+              <xsd:attribute name="operation" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string"/>
+      <xsd:attribute name="adapter" type="xsd:string"/>
+      <xsd:attribute name="wsdlLocation" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

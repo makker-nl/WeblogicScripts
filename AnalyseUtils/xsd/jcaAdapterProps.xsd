@@ -16,7 +16,7 @@
               <xsd:element name="spec">
                 <xsd:complexType>
                   <xsd:sequence>
-                  <!-- AQ/JMS -->
+                    <!-- AQ/JMS -->
                     <xsd:element name="DestinationName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="DeliveryMode" type="xsd:string" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="TimeToLive" type="xsd:string" maxOccurs="1" minOccurs="0"/>
@@ -46,6 +46,30 @@
                     <xsd:element name="PollingFrequency" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="DeleteFile" type="xsd:string" maxOccurs="1" minOccurs="0"/>
                     <xsd:element name="IncludeFiles" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <!-- File/FTP Move -->
+                    <xsd:element name="SourcePhysicalDirectory" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="SourceFileName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="SourceIsRemote" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="TargetPhysicalDirectory" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="TargetFileName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="Type" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <!-- Database -->
+                    <xsd:element name="SchemaName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="PackageName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="ProcedureName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="GetActiveUnitOfWork" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="DescriptorName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="DmlType" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="MappingsMetaDataURL" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="DetectOmissions" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="SqlString" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="QueryName" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="PollingStrategy" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="PollingInterval" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="MaxRaiseSize" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="MaxTransactionSize" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="NumberOfThreads" type="xsd:integer" maxOccurs="1" minOccurs="0"/>
+                    <xsd:element name="ReturnSingleResultSet" type="xsd:string" maxOccurs="1" minOccurs="0"/>
                   </xsd:sequence>
                   <xsd:attribute name="type" type="xsd:string"/>
                   <xsd:attribute name="className" type="xsd:string"/>
