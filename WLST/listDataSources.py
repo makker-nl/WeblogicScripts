@@ -53,6 +53,35 @@ def optional2str(optionalPar):
     result=optionalPar
   return result
 #
+# Append an item to a CSV list.
+def appendCSV(lineCSV, item):
+  if (lineCSV == ""):
+    lineCSV = item
+  else:
+    lineCSV = lineCSV+','+item
+  return lineCSV
+# 
+# Concatenate the targets into a comma separated values list.
+def listTargets(targetList):
+  targetCSV = ""
+  for target in targetList:
+    targetCSV = appendCSV(targetCSV, target.getName()+' ('+target.getType()+')')
+  return targetCSV
+# 
+# Concatenate the servers into a comma separated values list.
+def listServers(serverList):
+  serverCSV = ""
+  for server in serverList:
+    serverCSV = appendCSV(serverCSV, server.getName())
+  return serverCSV
+# 
+# Concatenate the strings in a list into a comma separated values list.
+def listStrings(stringList):
+  stringCSV = ""
+  for item in stringList:
+    stringCSV = appendCSV(stringCSV, item)
+  return stringCSV
+#
 # List the DataSources from the Server Config.
 def listDataSourceConfigs():
   print(lineSeperator)
@@ -64,6 +93,7 @@ def listDataSourceConfigs():
       # OpenFile
       fileNew=open(dataSourceConfigOutputFile, 'w')
       fileNew.write('Datasource')
+      fileNew.write(',Targets')
       # Connection Pool Parameters
       fileNew.write(',Minimum Capacity')
       fileNew.write(',Maximum Capacity')
@@ -128,6 +158,7 @@ def listDataSourceConfigs():
         oraParams=getMBean('JDBCSystemResources/'+dataSourceName+'/JDBCResource/'+dataSourceName+'/JDBCOracleParams/'+dataSourceName)
         dsParams=getMBean('JDBCSystemResources/'+dataSourceName+'/JDBCResource/'+dataSourceName+'/JDBCDataSourceParams/'+dataSourceName)
         fileNew.write(dataSourceName)
+        fileNew.write(',"'+listTargets(jdbcSystemResourceSource.getTargets())+'"')
         # Connection Pool Parameters
         fileNew.write(','+str(cpParams.getMinCapacity()))
         fileNew.write(','+str(cpParams.getMaxCapacity()))
@@ -175,13 +206,7 @@ def listDataSourceConfigs():
         fileNew.write(','+optional2str(dsParams.getAlgorithmType()))
         fileNew.write(','+bool2str(dsParams.isFailoverRequestIfBusy()))
         fileNew.write(','+optional2str(dsParams.getGlobalTransactionsProtocol()))
-        jndiNameList=""
-        for jndiName in dsParams.getJNDINames():
-          if (jndiNameList == ""):
-            jndiNameList = jndiName
-          else:
-            jndiNameList = jndiNameList + ',' + jndiName
-        fileNew.write(',"'+jndiNameList+'"')
+        fileNew.write(',"'+listStrings(dsParams.getJNDINames())+'"')
         fileNew.write(','+bool2str(dsParams.isKeepConnAfterGlobalTx()))
         fileNew.write(','+bool2str(dsParams.isKeepConnAfterLocalTx()))
         fileNew.write(','+bool2str(dsParams.isRowPrefetch()))

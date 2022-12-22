@@ -1,5 +1,5 @@
 #############################################################################
-# List Datasources on a domain
+# Test Datasources on a domain
 #
 # @author Martien van den Akker, Darwin-IT Professionals
 # @version 2.1, 2016-10-04

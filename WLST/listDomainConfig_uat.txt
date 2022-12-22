@@ -1,0 +1,132 @@
+set Fusion MiddleWare 12cR2 environment
+CLASSPATH=/lkqcsoapreprd_local/jdk/lib/tools.jar:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/../oracle_common/modules/features/cieCfg_cam_lib.jar:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/modules/features/wlst.wls.classpath.jar:/lkqcsoapreprd_local/jdk/lib/tools.jar:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/../oracle_common/modules/features/cieCfg_cam_lib.jar:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/modules/features/wlst.wls.classpath.jar:
+
+PATH=/lkqcsoapreprd_local/app/oracle/middleware/oracle_common/common/bin:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/server/bin:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/../oracle_common/modules/thirdparty/org.apache.ant/1.10.5.0.0/apache-ant-1.10.5/bin:/lkqcsoapreprd_local/jdk/jre/bin:/lkqcsoapreprd_local/jdk/bin:/sbin:/bin:/usr/sbin:/usr/bin:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/../oracle_common/modules/org.apache.maven_3.2.5/bin:/lkqcsoapreprd_local/app/oracle/middleware/wlserver/../oracle_common/modules/org.apache.maven_3.2.5/bin
+
+Your environment has been set.
+
+List FMW DomainConfig
+
+Initializing WebLogic Scripting Tool (WLST) ...
+
+Welcome to WebLogic Server Administration Scripting Shell
+
+Type help() for help on available commands
+
+__________________________________________________________________________________
+Connect to the AdminServer: AdminServer
+__________________________________________________________________________________
+Try to connect to the AdminServer
+Apparently user config properties usrCfgFile and usrKeyFile not set.
+Try to connect to the AdminServer adminUser and adminPwd properties
+Connecting to t3://omcscbbcwrlxhn:3021 with userid oraclemonitor ...
+Successfully connected to Admin Server "AdminServer" that belongs to domain "soapreprd_domain".
+
+Warning: An insecure protocol was used to connect to the server. 
+To ensure on-the-wire security, the SSL port or Admin port should be used instead.
+
+__________________________________________________________________________________
+Determining domain configuration
+
+__________________________________________________________________________________
+Check if MigrationBasis for all clusters is database
+
+ClusterName, MigrationBasis
+soa_cluster, database
+osb_cluster, database
+ess_cluster, database
+wsm_cluster, database
+
+__________________________________________________________________________________
+List Transaction Log Stores
+
+ServerName,DataSourceName,Enabled
+AdminServer,None,false
+wls_ess1,None,false
+wls_soa1,None,false
+wls_osb1,None,false
+wls_wsm1,None,false
+wls_ess2,None,false
+wls_soa2,None,false
+wls_osb2,None,false
+wls_wsm2,None,false
+wls_soa3,None,false
+wls_osb3,None,false
+wls_ess3,None,false
+wls_wsm3,None,false
+
+__________________________________________________________________________________
+List existing File persistent stores... 
+
+FileStoreName,Targets,Determined JDBCStoreName
+mds-owsm, "" ,mds-owsm
+mds-ESS_MDS_DS, "AdminServer (Server)" ,mds-ESS_MDS_DS
+mds-soa, "AdminServer (Server)" ,mds-soa
+FileStore_auto_2, "wls_osb1 (migratable) (MigratableTarget)" ,JdbcStore_auto_2
+UMSJMSFileStore_auto_4, "wls_osb1 (migratable) (MigratableTarget)" ,UMSJMSJdbcStore_auto_4
+FileStore_auto_3, "wls_osb2 (migratable) (MigratableTarget)" ,JdbcStore_auto_3
+UMSJMSFileStore_auto_5, "wls_osb2 (migratable) (MigratableTarget)" ,UMSJMSJdbcStore_auto_5
+BPMJMSFileStore_auto_2, "wls_soa1 (migratable) (MigratableTarget)" ,BPMJMSJdbcStore_auto_2
+UMSJMSFileStore_auto_6, "wls_soa1 (migratable) (MigratableTarget)" ,UMSJMSJdbcStore_auto_6
+SOAJMSFileStore_auto_2, "wls_soa1 (migratable) (MigratableTarget)" ,SOAJMSJdbcStore_auto_2
+BPMJMSFileStore_auto_3, "wls_soa2 (migratable) (MigratableTarget)" ,BPMJMSJdbcStore_auto_3
+UMSJMSFileStore_auto_7, "wls_soa2 (migratable) (MigratableTarget)" ,UMSJMSJdbcStore_auto_7
+SOAJMSFileStore_auto_3, "wls_soa2 (migratable) (MigratableTarget)" ,SOAJMSJdbcStore_auto_3
+UMSJMSFileStore_auto_2, "" ,UMSJMSJdbcStore_auto_2
+UMSJMSFileStore_auto_1, "wls_osb3 (migratable) (MigratableTarget)" ,UMSJMSJdbcStore_auto_1
+FileStore_auto_1, "wls_osb3 (migratable) (MigratableTarget)" ,JdbcStore_auto_1
+UMSJMSFileStore_auto_3, "wls_soa3 (migratable) (MigratableTarget)" ,UMSJMSJdbcStore_auto_3
+BPMJMSFileStore_auto_1, "wls_soa3 (migratable) (MigratableTarget)" ,BPMJMSJdbcStore_auto_1
+SOAJMSFileStore_auto_1, "wls_soa3 (migratable) (MigratableTarget)" ,SOAJMSJdbcStore_auto_1
+EOSJMSServer1_FileStore, "soa_cluster (Cluster)" ,EOSJMSServer1_JdbcStore
+EOSJMSServer2_FileStore, "soa_cluster (Cluster)" ,EOSJMSServer2_JdbcStore
+EOSJMSServer3_FileStore, "soa_cluster (Cluster)" ,EOSJMSServer3_JdbcStore
+EOSJMSFileStore1, "wls_soa1 (migratable) (MigratableTarget)" ,EOSJMSJdbcStore1
+EOSJMSFileStore2, "wls_soa2 (migratable) (MigratableTarget)" ,EOSJMSJdbcStore2
+EOSJMSFileStore3, "wls_soa3 (migratable) (MigratableTarget)" ,EOSJMSJdbcStore3
+
+__________________________________________________________________________________
+List existing JDBC persistent stores... 
+
+JDBCStoreName,Targets
+SOAJMSJDBCStore, ""
+BPMJMSJDBCStore, ""
+OSBJMSJDBCStore, ""
+UMSJMSJDBCStore, ""
+
+__________________________________________________________________________________
+List JMS Servers
+
+JMS Server,FileStore,Targets,TemporaryTemplateResource,TemporaryTemplateName
+wlsbJMSServer_auto_2,FileStore_auto_2,"wls_osb1 (migratable) (MigratableTarget)",jmsResources,TemporaryTmplt
+UMSJMSServer_auto_4,UMSJMSFileStore_auto_4,"wls_osb1 (migratable) (MigratableTarget)",None,None
+wlsbJMSServer_auto_3,FileStore_auto_3,"wls_osb2 (migratable) (MigratableTarget)",jmsResources,TemporaryTmplt
+UMSJMSServer_auto_5,UMSJMSFileStore_auto_5,"wls_osb2 (migratable) (MigratableTarget)",None,None
+BPMJMSServer_auto_2,BPMJMSFileStore_auto_2,"wls_soa1 (migratable) (MigratableTarget)",None,None
+UMSJMSServer_auto_6,UMSJMSFileStore_auto_6,"wls_soa1 (migratable) (MigratableTarget)",None,None
+SOAJMSServer_auto_2,SOAJMSFileStore_auto_2,"wls_soa1 (migratable) (MigratableTarget)",None,None
+BPMJMSServer_auto_3,BPMJMSFileStore_auto_3,"wls_soa2 (migratable) (MigratableTarget)",None,None
+UMSJMSServer_auto_7,UMSJMSFileStore_auto_7,"wls_soa2 (migratable) (MigratableTarget)",None,None
+SOAJMSServer_auto_3,SOAJMSFileStore_auto_3,"wls_soa2 (migratable) (MigratableTarget)",None,None
+EOSJMSServer1,EOSJMSFileStore1,"wls_soa1 (migratable) (MigratableTarget)",None,None
+EOSJMSServer2,EOSJMSFileStore2,"wls_soa2 (migratable) (MigratableTarget)",None,None
+UMSJMSServer_auto_2,UMSJMSFileStore_auto_2,"",None,None
+UMSJMSServer_auto_1,UMSJMSFileStore_auto_1,"wls_osb3 (migratable) (MigratableTarget)",None,None
+wlsbJMSServer_auto_1,FileStore_auto_1,"wls_osb3 (migratable) (MigratableTarget)",jmsResources,TemporaryTmplt
+UMSJMSServer_auto_3,UMSJMSFileStore_auto_3,"wls_soa3 (migratable) (MigratableTarget)",None,None
+BPMJMSServer_auto_1,BPMJMSFileStore_auto_1,"wls_soa3 (migratable) (MigratableTarget)",None,None
+SOAJMSServer_auto_1,SOAJMSFileStore_auto_1,"wls_soa3 (migratable) (MigratableTarget)",None,None
+EOSJMSServer3,EOSJMSFileStore3,"wls_soa3 (migratable) (MigratableTarget)",None,None
+
+__________________________________________________________________________________
+Disconnecting from AdminServer
+Disconnected from weblogic server: AdminServer
+
+__________________________________________________________________________________
+Done.
+
+__________________________________________________________________________________
+
+
+Exiting WebLogic Scripting Tool.
+

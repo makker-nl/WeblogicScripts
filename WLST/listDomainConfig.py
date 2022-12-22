@@ -9,9 +9,6 @@
 import sys, traceback
 scriptName = sys.argv[0]
 #
-dataSourceRuntimeOutputFile="listDataSourceRuntimes_"+environment+".csv"
-dataSourceConfigOutputFile="listDataSourceConfigs_"+environment+".csv"
-#
 pad='                                                                               '
 lineSeperator='__________________________________________________________________________________'
 #
@@ -54,6 +51,21 @@ def optional2str(optionalPar):
   return result
 #
 #
+def appendCSV(lineCSV, item):
+  if (lineCSV == ""):
+    lineCSV = item
+  else:
+    lineCSV = lineCSV+','+item
+  return lineCSV
+# 
+# Concatenate the targets into a comma separated values list.
+def listTargets(targetList):
+  targetCSV = ""
+  for target in targetList:
+    targetCSV = appendCSV(targetCSV, target.getName()+' ('+target.getType()+')')
+  return targetCSV
+#
+#
 def main():
   print lineSeperator
   print 'Connect to the AdminServer: '+adminServerName
@@ -64,63 +76,78 @@ def main():
   servers = cmo.getServers()
   standaloneServers = [x for x in servers if x.getCluster() == None]
   clusters = cmo.getClusters()
+  migratableTargets = cmo.getMigratableTargets()
   print lineSeperator
   print 'Check if MigrationBasis for all clusters is database\n'
-  cd('/')
-  print 'ClusterName, MigrationBasis'
+  print 'ClusterName,MigrationBasis,DataSourceForAutomaticMigration,WeblogicPluginEnabled,FrontendHost,FrontendHTTPPort,FrontendHTTPSPort'
   for cluster in clusters:
-      migrationBasis = cluster.getMigrationBasis()
-      print cluster.getName() + ', '+ migrationBasis
+    clusterCSV = ""
+    clusterCSV = appendCSV(clusterCSV, cluster.getName())
+    clusterCSV = appendCSV(clusterCSV, cluster.getMigrationBasis())
+    if (cluster.getDataSourceForAutomaticMigration() != None):
+      clusterCSV = appendCSV(clusterCSV, cluster.getDataSourceForAutomaticMigration().getName())
+    else:
+      clusterCSV = appendCSV(clusterCSV, "")
+    clusterCSV = appendCSV(clusterCSV, bool2str(cluster.isWeblogicPluginEnabled()))
+    clusterCSV = appendCSV(clusterCSV, optional2str(cluster.getFrontendHost()))
+    clusterCSV = appendCSV(clusterCSV, str(cluster.getFrontendHTTPPort()))
+    clusterCSV = appendCSV(clusterCSV, str(cluster.getFrontendHTTPSPort()))
+    print clusterCSV
   print '\n'+lineSeperator
-  print 'List Transaction Log Stores\n'
+  print 'List Servers and their Transaction Log Stores\n'
   cd('/')
-  print 'ServerName, DataSourceName, Enabled'
+  print 'ServerName,Machine,DataSourceName,Enabled,WeblogicPluginEnabled,FrontendHost,FrontendHTTPPort,FrontendHTTPSPort'
   for server in servers:
-      serverName = server.getName()
-      cd('/Servers/' + serverName + '/TransactionLogJDBCStore/' + serverName)
-      dataSourceName = 'None'
-      if (cmo.getDataSource() != None): 
-        dataSourceName = cmo.getDataSource().getName()
-      isEnabled = bool2str(cmo.isEnabled())
-      print serverName +','+ dataSourceName + ',' + isEnabled
+    serverCSV = ""
+    serverName = server.getName()
+    serverCSV = appendCSV(serverCSV, serverName)
+    if (server.getMachine() != None):
+      serverCSV = appendCSV(serverCSV,server.getMachine().getName())
+    else:
+      serverCSV = appendCSV(serverCSV, 'None')
+    cd('/Servers/' + serverName + '/TransactionLogJDBCStore/' + serverName)
+    if (cmo.getDataSource() != None): 
+      serverCSV = appendCSV(serverCSV, cmo.getDataSource().getName())
+    else:
+      serverCSV = appendCSV(serverCSV, 'None')
+    serverCSV = appendCSV(serverCSV,bool2str(cmo.isEnabled()))
+    serverCSV = appendCSV(serverCSV, bool2str(server.isWeblogicPluginEnabled()))
+    webServer = server.getWebServer()
+    serverCSV = appendCSV(serverCSV,optional2str(webServer.getFrontendHost()))
+    serverCSV = appendCSV(serverCSV,str(webServer.getFrontendHTTPPort()))
+    serverCSV = appendCSV(serverCSV,str(webServer.getFrontendHTTPSPort()))
+    print serverCSV
   print '\n'+lineSeperator
   print 'List existing File persistent stores... \n'
   cd('/')
-  print 'FileStoreName, Targets, Determined JDBCStoreName'
+  print 'FileStoreName,Targets,Determined JDBCStoreName'
   for fileStore in cmo.getFileStores():
       fileStoreName = fileStore.getName()
       jdbcStoreName = re.sub('(File)?Store', 'JdbcStore', fileStoreName)
       cd('/')
-      targetList = ""
-      for target in fileStore.getTargets():
-        if (targetList == ""):
-          targetList = target.getName()
-        else:
-          targetList = targetList + ',' + target.getName()
-      print fileStoreName+', "'+targetList+'"',','+jdbcStoreName
+      targetCSV = listTargets(fileStore.getTargets())
+      print fileStoreName+', "'+targetCSV+'"',','+jdbcStoreName
   print '\n'+lineSeperator
   print 'List existing JDBC persistent stores... \n'
   cd('/')
-  print 'JDBCStoreName, Targets'
+  print 'JDBCStoreName,Targets'
   for jdbcStore in cmo.getJDBCStores():
       jdbcStoreName = jdbcStore.getName()
       cd('/')
-      targetList = ""
-      for target in jdbcStore.getTargets():
-        if (targetList == ""):
-          targetList = target.getName()
-        else:
-          targetList = targetList + ',' + target.getName()
-      print jdbcStoreName+', "'+targetList+'"'
+      targetCSV = listTargets(jdbcStore.getTargets())
+      print jdbcStoreName+', "'+targetCSV +'"'
   print '\n'+lineSeperator
   print 'List JMS Servers\n'
   cd('/')
-  print 'JMS Server, FileStore, TemporaryTemplateResource, TemporaryTemplateName'
+  print 'JMS Server,FileStore,Targets,TemporaryTemplateResource,TemporaryTemplateName'
   for jmsServer in cmo.getJMSServers():
       jmsServerName = jmsServer.getName()
       cd('/JMSServers/'+jmsServerName)
-      fileStoreName = cmo.getPersistentStore().getName()
-      print jmsServerName + ',' + fileStoreName  + ',' + optional2str(cmo.getTemporaryTemplateResource()) + ',' + optional2str(cmo.getTemporaryTemplateName())
+      persistenceStore = cmo.getPersistentStore()
+      if (persistenceStore != None):
+        fileStoreName = cmo.getPersistentStore().getName()
+      targetCSV = listTargets(jmsServer.getTargets())
+      print jmsServerName + ',' + fileStoreName  + ',"'+ targetCSV +'",'+ optional2str(cmo.getTemporaryTemplateResource()) + ',' + optional2str(cmo.getTemporaryTemplateName())
   print '\n'+lineSeperator
   print 'Disconnecting from AdminServer'
   disconnect()
