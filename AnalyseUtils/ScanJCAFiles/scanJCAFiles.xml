@@ -23,10 +23,10 @@
     <appendCSV item='jcaFile'/>
     <appendCSV item='Adapter-config Name'/>
     <appendCSV item='Adapter Type'/>
+    <appendCSV item='Endpoint Type'/>
     <appendCSV item='Connection Factory Location'/>
     <appendCSV item='Endpoint PortType'/>
     <appendCSV item='Endpoint Operation'/>
-    <appendCSV item='Endpoint Type'/>
     <appendCSV item='Class Name'/>
     <!--JMS/AQ -->
     <appendCSV item='DestinationName'/>
@@ -58,6 +58,30 @@
     <appendCSV item='PollingFrequency'/>
     <appendCSV item='DeleteFile'/>
     <appendCSV item='IncludeFiles'/>
+    <!-- File/FTP Move -->
+    <appendCSV item='SourcePhysicalDirectory'/>
+    <appendCSV item='SourceFileName'/>
+    <appendCSV item='SourceIsRemote'/>
+    <appendCSV item='TargetPhysicalDirectory'/>
+    <appendCSV item='TargetFileName'/>
+    <appendCSV item='Type'/>
+    <!-- Database -->
+    <appendCSV item='SchemaName'/>
+    <appendCSV item='PackageName'/>
+    <appendCSV item='ProcedureName'/>
+    <appendCSV item='GetActiveUnitOfWork'/>
+    <appendCSV item='DescriptorName'/>
+    <appendCSV item='DmlType'/>
+    <appendCSV item='MappingsMetaDataURL'/>
+    <appendCSV item='DetectOmissions'/>
+    <appendCSV item='SqlString'/>
+    <appendCSV item='QueryName'/>
+    <appendCSV item='PollingStrategy'/>
+    <appendCSV item='PollingInterval'/>
+    <appendCSV item='MaxRaiseSize'/>
+    <appendCSV item='MaxTransactionSize'/>
+    <appendCSV item='NumberOfThreads'/>
+    <appendCSV item='ReturnSingleResultSet'/>
     <echo file="${outputFile}" append="true" message="${line.separator}"></echo>
     <foreach param="project.file" target="handleProject" delimiter=';' inheritall="true">
       <path>
@@ -90,10 +114,10 @@
     <appendCSV item="${jca.file.name}"/>
     <appendCSV item="${adapter-config.name}"/>
     <appendCSV item="${adapter-config.adapter}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.type}"/>
     <appendCSV item="${adapter-config.connection-factory.location}"/>
     <appendCSV item="${adapter-config.endpoint.portType}"/>
     <appendCSV item="${adapter-config.endpoint.operation}"/>
-    <appendCSV item="${adapter-config.endpoint.spec.type}"/>
     <appendCSV item="${adapter-config.endpoint.spec.className}"/>
     <!--JMS/AQ -->
     <appendCSV item="${adapter-config.endpoint.spec.DestinationName}"/>
@@ -125,6 +149,30 @@
     <appendCSV item="${adapter-config.endpoint.spec.PollingFrequency}"/>
     <appendCSV item="${adapter-config.endpoint.spec.DeleteFile}"/>
     <appendCSV item="${adapter-config.endpoint.spec.IncludeFiles}"/>
+    <!-- File/FTP Move -->
+    <appendCSV item="${adapter-config.endpoint.spec.SourcePhysicalDirectory}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.SourceFileName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.SourceIsRemote}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.TargetPhysicalDirectory}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.TargetFileName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.Type}"/>
+    <!-- Database -->
+    <appendCSV item="${adapter-config.endpoint.spec.SchemaName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.PackageName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.ProcedureName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.GetActiveUnitOfWork}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.DescriptorName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.DmlType}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.MappingsMetaDataURL}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.DetectOmissions}"/>
+    <appendCSV item='"${adapter-config.endpoint.spec.SqlString}"'/>
+    <appendCSV item="${adapter-config.endpoint.spec.QueryName}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.PollingStrategy}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.PollingInterval}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.MaxRaiseSize}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.MaxTransactionSize}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.NumberOfThreads}"/>
+    <appendCSV item="${adapter-config.endpoint.spec.ReturnSingleResultSet}"/>
     <echo file="${outputFile}" append="true" message="${line.separator}"></echo>
   </target>
   <macrodef name="appendCSV">

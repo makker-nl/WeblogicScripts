@@ -33,8 +33,8 @@
     <adapter-config name="{@name}" adapter="{@adapter}" wsdlLocation="{@wsdlLocation}">
       <connection-factory location="{ns0:connection-factory/@location}"
                           adapterRef="{ns0:connection-factory/@adapterRef}"/>
-      <xsl:apply-templates select="ns0:endpoint-interaction"/>
-      <xsl:apply-templates select="ns0:endpoint-activation"/>
+      <xsl:apply-templates select="ns0:endpoint-interaction[string-length(@operation)>0]"/>
+      <xsl:apply-templates select="ns0:endpoint-activation[string-length(@operation)>0]"/>
     </adapter-config>
   </xsl:template>
   <!-- Endpoint Interaction Template -->
@@ -146,6 +146,74 @@
       <IncludeFiles>
         <xsl:value-of select="$spec/ns0:property[@name='IncludeFiles']/@value"/>
       </IncludeFiles>
+      <!-- File/FTP Move -->
+      <SourcePhysicalDirectory>
+        <xsl:value-of select="$spec/ns0:property[@name='SourcePhysicalDirectory']/@value"/>
+      </SourcePhysicalDirectory>
+      <SourceFileName>
+        <xsl:value-of select="$spec/ns0:property[@name='SourceFileName']/@value"/>
+      </SourceFileName>
+      <SourceIsRemote>
+        <xsl:value-of select="$spec/ns0:property[@name='SourceIsRemote']/@value"/>
+      </SourceIsRemote>
+      <TargetPhysicalDirectory>
+        <xsl:value-of select="$spec/ns0:property[@name='TargetPhysicalDirectory']/@value"/>
+      </TargetPhysicalDirectory>
+      <TargetFileName>
+        <xsl:value-of select="$spec/ns0:property[@name='TargetFileName']/@value"/>
+      </TargetFileName>
+      <Type>
+        <xsl:value-of select="$spec/ns0:property[@name='Type']/@value"/>
+      </Type>
+      <!-- Database -->
+      <SchemaName>
+        <xsl:value-of select="$spec/ns0:property[@name='SchemaName']/@value"/>
+      </SchemaName>
+      <PackageName>
+        <xsl:value-of select="$spec/ns0:property[@name='PackageName']/@value"/>
+      </PackageName>
+      <ProcedureName>
+        <xsl:value-of select="$spec/ns0:property[@name='ProcedureName']/@value"/>
+      </ProcedureName>
+      <GetActiveUnitOfWork>
+        <xsl:value-of select="$spec/ns0:property[@name='GetActiveUnitOfWork']/@value"/>
+      </GetActiveUnitOfWork>
+      <DescriptorName>
+        <xsl:value-of select="$spec/ns0:property[@name='DescriptorName']/@value"/>
+      </DescriptorName>
+      <DmlType>
+        <xsl:value-of select="$spec/ns0:property[@name='DmlType']/@value"/>
+      </DmlType>
+      <MappingsMetaDataURL>
+        <xsl:value-of select="$spec/ns0:property[@name='MappingsMetaDataURL']/@value"/>
+      </MappingsMetaDataURL>
+      <DetectOmissions>
+        <xsl:value-of select="$spec/ns0:property[@name='DetectOmissions']/@value"/>
+      </DetectOmissions>
+      <SqlString>
+        <xsl:value-of select="$spec/ns0:property[@name='SqlString']/@value"/>
+      </SqlString>
+      <QueryName>
+        <xsl:value-of select="$spec/ns0:property[@name='QueryName']/@value"/>
+      </QueryName>
+      <PollingStrategy>
+        <xsl:value-of select="$spec/ns0:property[@name='PollingStrategy']/@value"/>
+      </PollingStrategy>
+      <PollingInterval>
+        <xsl:value-of select="$spec/ns0:property[@name='PollingInterval']/@value"/>
+      </PollingInterval>
+      <MaxRaiseSize>
+        <xsl:value-of select="$spec/ns0:property[@name='MaxRaiseSize']/@value"/>
+      </MaxRaiseSize>
+      <MaxTransactionSize>
+        <xsl:value-of select="$spec/ns0:property[@name='MaxTransactionSize']/@value"/>
+      </MaxTransactionSize>
+      <NumberOfThreads>
+        <xsl:value-of select="$spec/ns0:property[@name='NumberOfThreads']/@value"/>
+      </NumberOfThreads>
+      <ReturnSingleResultSet>
+        <xsl:value-of select="$spec/ns0:property[@name='ReturnSingleResultSet']/@value"/>
+      </ReturnSingleResultSet>
     </spec>
   </xsl:template>
 </xsl:stylesheet>
