@@ -7,6 +7,9 @@
 #############################################################################
 # Modify these values as necessary
 import sys, traceback
+#Import re module for using regular expressions
+import re
+#
 scriptName = sys.argv[0]
 #
 pad='                                                                               '
