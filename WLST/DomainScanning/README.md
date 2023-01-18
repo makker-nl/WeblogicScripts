@@ -59,13 +59,13 @@ The script delivers two CSV files:
 * *listDataSourceRuntimes_$environment.csv*
 * *listDataSourceConfigs_$environment.csv*
 
-The scripts [listDS.py](listDS.py)[sh](listDS.sh) are a simple, earlier version, that outputs the main config properties in tabular format. 
+The scripts [listDS.py](listDS.py)/[sh](listDS.sh) are a simple, earlier version, that outputs the main config properties in tabular format. 
 
-With [testDS.py](testDS.py)[sh](testDS.sh) you can test the DataSources in your domain. 
+With [testDS.py](testDS.py)/[sh](testDS.sh) you can test the DataSources in your domain. 
 
 
 ### List Domain Config
-The script [listDomainConfig.py](listDomainConfig.py)[sh](listDomainConfig.sh) are to scan the Domain primarly for High Availability properties. Think of the cluster _Migration Basis_, datasources being GridLink, etc.
+The script [listDomainConfig.py](listDomainConfig.py)/[sh](listDomainConfig.sh) are to scan the Domain primarly for High Availability properties. Think of the cluster _Migration Basis_, datasources being GridLink, etc.
 The script outputs all the data in CSV snippets that can be copied to Excel.
 
 ### List Migratable Targets
