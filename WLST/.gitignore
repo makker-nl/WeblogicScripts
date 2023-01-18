@@ -1,0 +1,7 @@
+.ssh
+**/*.tar.gz
+**/*/.rpm
+**/*.jar
+**/*.tar
+**/*.zip
+**/*.properties

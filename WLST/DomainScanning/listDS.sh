@@ -1,6 +1,6 @@
 #!/bin/bash
 #############################################################################
-# List Assigned ServerGroups using wlst
+# List DataSources using wlst
 #
 # @author Martien van den Akker, Darwin-IT Professionals
 # @version 1.0, 2022-12-12

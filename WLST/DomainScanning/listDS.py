@@ -19,7 +19,7 @@ def usage():
   print 'Windows: wlst.cmd '+scriptName+' -loadProperties localhost.properties'
   print 'Linux: wlst.sh '+scriptName+' -loadProperties environment.properties'
   print 'Property file should contain the following properties: '
-  print "adminUrl=hhs-sbm3015:7001"
+  print "adminUrl=localhost:7001"
   print "adminUser=weblogic"
   print "adminPwd=welcome1"
 #

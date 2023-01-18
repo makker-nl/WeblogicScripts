@@ -1,7 +1,5 @@
 #!/bin/bash
 echo set Fusion MiddleWare 12cR2 environment
-#export FMW_VER=12.2.1.3
-#export DOMAIN_NAME=fmw12c_domain
 export ORACLE_BASE=/app/oracle
 export INVENTORY_DIRECTORY=/app/oraInventory
 export FMW_HOME=$ORACLE_BASE/product/middleware/FMW12214
