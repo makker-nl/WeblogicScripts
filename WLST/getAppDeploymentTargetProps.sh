@@ -1,9 +1,9 @@
 #!/bin/bash
 #############################################################################
-# List Application Deployments on a domain using wlst
+# Get Application Deployment targetting properties using wlst
 #
 # @author Martien van den Akker, Oracle Nederland B.V.
-# @version 1.0, 2023-01-06
+# @version 1.0, 2023-01-09
 #
 #############################################################################
 #
@@ -11,4 +11,4 @@
 export ENV=$1
 echo
 echo "List Application Deployments"
-wlst.sh ./listAppDeployments.py -loadProperties ${ENV}.properties
+wlst.sh ./getAppDeploymentTargetProps.py -loadProperties ${ENV}.properties
