@@ -26,7 +26,6 @@ Make a copy for your target environment, like test or uat, and adapt the followi
 * **adminPwd**: Password of the WebLogic Admin user.
 
 Besides those the environment properties set the following properties:
-* **defaultPassword=welcome1
 * **userPropsFile**: refers to the specific user and group properties: [usersAndGroups.properties](usersAndGroups.properties)
 * **wlsUsers**: List of users to create from the [usersAndGroups.properties](usersAndGroups.properties) file.
 * **wlsGroups**:List of users to create from the [usersAndGroups.properties](usersAndGroups.properties) file.
