@@ -9,7 +9,7 @@ It consists of the following parts:
 
 # Setup
 ## Adapt shell script for the Weblogic Installation
-The [createDemoUsers.sh](createDemoUsers.sh) script starts with setting environment variables for the Oracle Fusion Middelware 12c home and _JAVA_HOME_ to use. Using those it invokes the _setWLSEnv.sh_ script to set the proper environment to call WLST.
+The [createDemoUsers.sh](createDemoUsers.sh) script starts with setting environment variables for the Oracle Fusion Middleware 12c home and _JAVA_HOME_ to use. Using those, it invokes the _setWLSEnv.sh_ script to set the proper environment to call WLST.
 
 To adapt it to your environment change the following variables:
 * **ORACLE_BASE**: Base folder of the Oracle installations on the host.
@@ -42,7 +42,7 @@ After applying the setup changes mentioned above, run the script as follows:
 $ createDemoUsers.sh demo
 ````
 
-Where _demo_ refers to the environment to create the users for. The [createDemoUsers.sh](createDemoUsers.sh) script will provide expand the _ENV_ parameter to ${ENV}.properties. In this example _demo.properties_ will be read.
+Where _demo_ refers to the environment for which to create the users. The [createDemoUsers.sh](createDemoUsers.sh) script will provide expand the _ENV_ parameter to _${ENV}.properties_. In this example, the property file _demo.properties_ will be read.
 
 # Resource
 The original Oracle BPM Demo user community is given in the xml file [default-demo-community.xml](default-demo-community.xml). This is translated into the [usersAndGroups.properties](usersAndGroups.properties) file.
