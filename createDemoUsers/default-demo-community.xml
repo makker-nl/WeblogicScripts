@@ -1,0 +1,493 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<demoUserCommunity xmlns="http://xmlns.oracle.com/pcbpel/humanworkflow/identity/demousers"
+	          targetNamespace="http://xmlns.oracle.com/pcbpel/humanworkflow/identity/demousers" >
+
+     <userObject>
+	<name>demoadmin</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>demoadmin@emailExample.com</email> 	      
+	<title>ADMIN</title>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000000</workPhone>
+	<homePhone>200000000</homePhone>
+	<mobile>300000000</mobile>
+	<im>jabber|demoadmin@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>cdickens</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>cdickens@emailExample.com</email> 	      
+	<title>CEO</title>
+	<firstName>Charles</firstName>
+	<lastName>Dickens</lastName>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000001</workPhone>
+	<homePhone>200000001</homePhone>
+	<mobile>300000001</mobile>
+	<im>jabber|cdickens@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>wfaulk</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>wfaulk@emailExample.com</email> 	      
+	<title>Vice President</title>
+	<firstName>William</firstName>
+	<lastName>Faulkner</lastName>
+	<manager>cdickens</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000002</workPhone>
+	<homePhone>200000002</homePhone>
+	<mobile>300000002</mobile>
+	<im>jabber|wfaulk@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>sfitzger</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>sfitzger@emailExample.com</email> 	      
+	<title>Manager1</title>
+	<firstName>Scott</firstName>
+	<lastName>Fitzgerald</lastName>
+	<manager>wfaulk</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000003</workPhone>
+	<homePhone>200000003</homePhone>
+	<mobile>300000003</mobile>
+	<im>jabber|sfitzger@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>jstein</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>jstein@emailExample.com</email> 	      
+	<title>Manager2</title>
+	<firstName>John</firstName>
+	<lastName>Steinbeck</lastName>
+	<manager>wfaulk</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000004</workPhone>
+	<homePhone>200000004</homePhone>
+	<mobile>300000004</mobile>
+	<im>jabber|jstein@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>istone</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>istone@emailExample.com</email> 	      
+	<title>Loan Agent 2</title>
+	<firstName>Irving</firstName>
+	<lastName>Stone</lastName>
+	<manager>sfitzger</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000005</workPhone>
+	<homePhone>200000005</homePhone>
+	<mobile>300000005</mobile>
+	<im>jabber|istone@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>jcooper</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>jcooper@emailExample.com</email> 	      
+	<title>Loan Agent 1</title>
+	<firstName>James</firstName>
+	<lastName>Cooper</lastName>
+	<manager>jstein</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000006</workPhone>
+	<homePhone>200000006</homePhone>
+	<mobile>300000006</mobile>
+	<im>jabber|jcooper@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>mtwain</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>mtwain@emailExample.com</email> 	      
+	<title>Loan Agent 2</title>
+	<firstName>Mark</firstName>
+	<lastName>Twain</lastName>
+	<manager>jstein</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000007</workPhone>
+	<homePhone>200000007</homePhone>
+	<mobile>300000007</mobile>
+	<im>jabber|mtwain@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>jlondon</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>jlondon@emailExample.com</email> 	      
+	<title>Loan Agent 1</title>
+	<firstName>Jack</firstName>
+	<lastName>London</lastName>
+	<manager>sfitzger</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000008</workPhone>
+	<homePhone>200000008</homePhone>
+	<mobile>300000008</mobile>
+	<im>jabber|jlondon@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>ltolstoy</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>ltolstoy@emailExample.com</email> 	      
+	<title>Director</title>
+	<firstName>Leo</firstName>
+	<lastName>Tolstoy</lastName>
+	<manager>wfaulk</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000009</workPhone>
+	<homePhone>200000009</homePhone>
+	<mobile>300000009</mobile>
+	<im>jabber|ltolstoy@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+        <name>fkafka</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>fkafka@emailExample.com</email> 	      
+	<title>Manager 1</title>
+	<firstName>Franz</firstName>
+	<lastName>Kafka</lastName>
+	<manager>ltolstoy</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000010</workPhone>
+	<homePhone>200000010</homePhone>
+	<mobile>300000010</mobile>
+	<im>jabber|fkafka@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>szweig</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>szweig@emailExample.com</email> 	      
+	<title>Loan Analyst</title>
+	<firstName>Stefan</firstName>
+	<lastName>Zweig</lastName>
+	<manager>fkafka</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000011</workPhone>
+	<homePhone>200000011</homePhone>
+	<mobile>300000011</mobile>
+	<im>jabber|szweig@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>mmitch</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>mmitch@emailExample.com</email> 	      
+	<title>Loan Analyst</title>
+	<firstName>Margaret</firstName>
+	<lastName>Mitchell</lastName>
+	<manager>fkafka</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000012</workPhone>
+	<homePhone>200000012</homePhone>
+	<mobile>300000012</mobile>
+	<im>jabber|mmitch@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>jausten</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>jausten@emailExample.com</email> 	      
+	<title>Loan Consultant</title>
+	<firstName>Jane</firstName>
+	<lastName>Austen</lastName>
+	<manager>fkafka</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000013</workPhone>
+	<homePhone>200000013</homePhone>
+	<mobile>300000013</mobile>
+	<im>jabber|jausten@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>achrist</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>achrist@emailExample.com</email> 	      
+	<title>Loan Consultant</title>
+	<firstName>Agatha</firstName>
+	<lastName>Christie</lastName>
+	<manager>wfaulk</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000014</workPhone>
+	<homePhone>200000014</homePhone>
+	<mobile>300000014</mobile>
+	<im>jabber|achrist@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>rsteven</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>rsteven@emailExample.com</email> 	      
+	<title>Manager 3</title>
+	<firstName>Robert</firstName>
+	<lastName>Stevenson</lastName>
+	<manager>jstein</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000015</workPhone>
+	<homePhone>200000015</homePhone>
+	<mobile>300000015</mobile>
+	<im>jabber|rsteven@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+	<name>cdoyle</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>cdoyle@emailExample.com</email> 	      
+	<title>Loan Agent 2</title>
+	<firstName>Conan</firstName>
+	<lastName>Doyle</lastName>
+	<manager>rsteven</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000016</workPhone>
+	<homePhone>200000016</homePhone>
+	<mobile>300000016</mobile>
+	<im>jabber|cdoyle@exampleIM.com</im>
+     </userObject> 
+     
+     <userObject>
+        <name>wshake</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>wshake@emailExample.com</email> 	      
+	<title>Manager 3</title>
+	<firstName>William</firstName>
+	<lastName>Shakespeare</lastName>
+	<manager>rsteven</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000017</workPhone>
+	<homePhone>200000017</homePhone>
+	<mobile>300000017</mobile>
+	<im>jabber|wshake@exampleIM.com</im>
+     </userObject> 
+
+     <userObject>
+        <name>JVerne</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>JVerne@emailExample.com</email> 	      
+	<title>CIO</title>
+	<firstName>Jules</firstName>
+	<lastName>Verne</lastName>
+	<manager>cdickens</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000018</workPhone>
+	<homePhone>200000018</homePhone>
+	<mobile>300000018</mobile>
+	<im>jabber|JVerne@exampleIM.com</im>
+     </userObject>
+ 
+     <userObject>
+        <name>EHEMING</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>EHEMING@emailExample.com</email> 	      
+	<title>CFO</title>
+	<lastName>HEMINGWAY</lastName>
+	<manager>JVerne</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000019</workPhone>
+	<homePhone>200000019</homePhone>
+	<mobile>300000019</mobile>
+	<im>jabber|EHEMING@exampleIM.com</im>
+     </userObject>
+ 
+     <userObject>
+        <name>VHUGO</name>
+	<password>welcome1</password>
+        <description>Demo User</description>
+	<email>VHUGO@emailExample.com</email> 	      
+	<title>HR Manager</title>
+	<manager>EHEMING</manager>
+        <timeZone>America/Los_Angeles</timeZone>
+	<languagePreference>en-US</languagePreference> 
+	<workPhone>100000020</workPhone>
+	<homePhone>200000020</homePhone>
+	<mobile>300000020</mobile>
+	<im>jabber|VHUGO@exampleIM.com</im>
+     </userObject>
+
+     <groupObject>
+	<name>Supervisor</name>
+	<description>Supervisor Group</description>
+	<email>Supervisor@emailExample.com</email> 	      
+        <owners>
+	    <user>jstein</user>
+	</owners>
+	<members>
+	    <user>jcooper</user>
+	    <user>mtwain</user>
+	    <user>rsteven</user>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>LoanAnalyticGroup</name>
+	<description>Loan Analytic Demo Group</description>
+	<email>LoanAnalyticGroup@emailExample.com</email> 	      
+        <owners>
+	    <user>jstein</user>
+	</owners>
+	<members>
+	    <user>fkafka</user>
+	    <user>szweig</user>
+	    <user>mmitch</user>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>LoanAgentGroup</name>
+	<description>Loan Agent Demo Group</description>
+	<email>LoanAgentGroup@emailExample.com</email> 	      
+	<owners>
+	    <user>fkafka</user> 
+	    <user>jcooper</user> 
+	</owners>
+	<members>
+	    <user>jcooper</user>
+	    <user>istone</user>
+	    <user>mtwain</user>
+	    <user>jlondon</user>
+	    <user>cdoyle</user>
+	    <user>wshake</user>
+	    <group>LoanAnalyticGroup</group>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>California</name>
+	<description>California Group</description>
+	<email>California@emailExample.com</email> 	      
+        <owners>
+	    <user>fkafka</user>
+	</owners>
+	<members>
+	    <user>jcooper</user>
+	    <user>istone</user>
+	</members>
+     </groupObject>
+     
+     <groupObject>
+	<name>WesternRegion</name>
+	<description>WesternRegion Group</description>
+	<email>WesternRegion@emailExample.com</email> 	      
+        <owners>
+	    <user>jstein</user>
+	</owners>
+	<members>
+	    <user>cdoyle</user>
+	    <group>California</group>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>EasternRegion</name>
+	<description>EasternRegion Group</description>
+	<email>EasternRegion@emailExample.com</email> 	      
+        <owners>
+	    <user>jstein</user>
+	</owners>
+	<members>
+	    <user>fkafka</user>
+	    <user>szweig</user>
+	    <user>mmitch</user>
+	    <user>wshake</user>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>CentralRegion</name>
+	<description>CentralRegion Group</description>
+	<email>CentralRegion@emailExample.com</email> 	      
+	<members>
+	    <user>mtwain</user>
+	    <user>jlondon</user>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>RegionalOffices</name>
+	<description>RegionalOffices Group</description>
+	<email>RegionalOffices@emailExample.com</email> 	      
+	<members>
+	    <group>WesternRegion</group>
+	    <group>EasternRegion</group>
+	    <group>CentralRegion</group>
+	</members>
+     </groupObject>
+
+     <groupObject>
+	<name>Executives</name>
+	<description>Executives Group</description>
+	<email>Executives@emailExample.com</email> 	      
+	<members>
+	    <user>cdickens</user>
+	    <user>JVerne</user>
+	    <user>EHEMING</user>
+	    <user>VHUGO</user>
+	</members>
+     </groupObject>
+
+     <appRoleGrant> 
+         <appStripe>soa-infra</appStripe>
+         <appRoleName>BPMWorkflowAdmin</appRoleName>
+	 <members>
+	    <user>demoadmin</user>
+	 </members>
+     </appRoleGrant> 
+
+     <appRoleGrant> 
+         <appStripe>soa-infra</appStripe>
+         <appRoleName>BPMWorkflowCustomize</appRoleName>
+	 <members>
+	    <group>LoanAnalyticGroup</group>
+	 </members>
+     </appRoleGrant> 
+
+</demoUserCommunity> 
+

@@ -7,3 +7,6 @@ The project [AnalyseUtils](AnalyseUtils/README.md) contains several sub-projects
 
 ## WLST
 The [WLST](WLST) folder contains several Weblogic Scripting Tool scripts that can be used to analyse or modify a Weblogic environment.
+
+## Create Demo Users
+The [createDemoUsers](createDemoUsers) contains a script to create a set of demo users and groups. The example properties define the Oracle BPM Demo User community. But, it can be adapted to create your own set of users and groups.
