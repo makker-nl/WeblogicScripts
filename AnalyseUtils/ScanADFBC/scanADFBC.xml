@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!--Ant Build file to scan JCA files in a repository and list relvant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="scanADFBC" default="all" basedir=".">
+  <property name="author" value="Martien van den Akker"/>
+  <property name="version" value="1.0"/>
+  <property environment="env"/>
+  <property file="build.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${ant-contrib.jar}"/>
+    </classpath>
+  </taskdef>
+  <!-- Initialisatie -->
+  <target name="clean" description="Clean the temp folder">
+    <delete dir="${adfTempDir}"/>
+    <mkdir dir="${adfTempDir}"/>
+    <delete file="${outputFile}"/>
+  </target>
+  <!-- Perform all -->
+  <target name="all" description="Scan All ADF applications" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <appendCSV item='Application' first="true"/>
+    <appendCSV item='Project name'/>
+    <appendCSV item="ADF BC Type"/>
+    <appendCSV item="ADF BC Folder"/>    
+    <appendCSV item="ADF BC Component"/>
+    <appendCSV item="ADF BC Name"/>
+    <appendCSV item="Table List"/>
+    <appendCSV item="Column List"/>
+    <appendCSV item="CustomQuery"/>
+    <appendCSV item="FromList"/>
+    <appendCSV item="EntityUsage Name"/>
+    <appendCSV item="EntityUsage Entity"/>
+    <appendCSV item="ViewAttributeList"/>
+    <appendCSVNewLine/>
+    <foreach param="project.file" target="handleProject" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${adfRoot}" includes="**/*.jpr"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="handleProject">
+    <echo message="projectFile: ${project.file}"></echo>
+    <dirname property="project.dir" file="${project.file}"/>
+    <echo message="project dir: ${project.dir}"></echo>
+    <property name="application.dir" location="${project.dir}/.."/>
+    <basename property="application.name" file="${application.dir}"/>
+    <basename property="project.name" file="${project.file}" suffix=".jpr"/>
+    <!-- Process entity objects -->
+    <foreach param="entityobject.file" target="handleEntityObject" delimiter=";" inheritall="true">
+      <path>
+        <fileset id="model.entities.contents" dir="${project.dir}" includes="**/model/entities/**/*.xml"/>
+      </path>
+    </foreach>
+    <!-- Process view objects -->
+    <foreach param="viewobject.file" target="handleViewObject" delimiter=";" inheritall="true">
+      <path>
+        <fileset id="model.views.contents" dir="${project.dir}" includes="**/model/views/**/*.xml"/>
+      </path>
+    </foreach>
+  </target>
+  <target name="handleEntityObject">
+    <basename property="entityobject.file.name" file="${entityobject.file}"/>
+    <property name="entityobject.file.props" value="${adfTempDir}/${entityobject.file.name}.props"/>
+    <property name="entityobject.file.edit" value="${adfTempDir}/${entityobject.file.name}"/>
+    <dirname property="entityobject.dir" file="${entityobject.file}"/>
+    <!-- Only handle XML files that contains DOCTYPE for Entity Objects -->
+    <fileset id="entityObject" file="${entityobject.file}">
+      <contains text="DOCTYPE Entity SYSTEM" casesensitive="no"/>
+    </fileset>
+    <if>
+      <resourcecount when="greater" count="0" refid="entityObject"/>
+      <then>
+        <copy tofile="${entityobject.file.edit}" file="${entityobject.file}">
+          <filterchain>
+            <linecontains negate="true">
+              <contains value="DOCTYPE"/>
+            </linecontains>
+          </filterchain>
+        </copy>
+        <echo message="ADFBC File: ${entityobject.file.name}"></echo>
+        <xslt style="${adfEntPropsXsl}" in="${entityobject.file.edit}" out="${entityobject.file.props}"/>
+        <xmlproperty file="${entityobject.file.props}" collapseattributes="true"/>
+        <!-- see https://ant.apache.org/manual/Tasks/xmlproperty.html -->
+        <appendCSV item="${application.name}" first="true"/>
+        <appendCSV item="${project.name}"/>
+        <appendCSV item="Entity Object"/>
+        <appendCSV item="${entityobject.dir}"/>
+        <appendCSV item="${entityobject.file.name}"/>
+        <appendCSV item="${entity.name}"/>
+        <!-- EntityObject kolommen -->
+        <appendCSVQuoted item="${entity.tableList}"/>
+        <appendCSVQuoted item="${entity.columnList}"/>
+        <!-- Lege ViewObject kolommen -->
+        <appendCSV item=""/>
+        <appendCSV item=""/>
+        <appendCSV item=""/>
+        <appendCSV item=""/>
+        <appendCSV item=""/>
+        <appendCSVNewLine/>
+      </then>
+      <else>
+        <echo message="ADFBC File: ${entityobject.file.name} is not an Entity object. Skip file."></echo>
+      </else>
+    </if>
+  </target>
+  <target name="handleViewObject">
+    <basename property="viewobject.file.name" file="${viewobject.file}"/>
+    <property name="viewobject.file.props" value="${adfTempDir}/${viewobject.file.name}.props"/>
+    <property name="viewobject.file.edit" value="${adfTempDir}/${viewobject.file.name}"/>
+    <dirname property="viewobject.dir" file="${viewobject.file}"/>
+    <!-- Only handle XML files that contains DOCTYPE for View Objects -->
+    <fileset id="viewObject" file="${viewobject.file}">
+      <contains text="DOCTYPE ViewObject SYSTEM" casesensitive="no"/>
+    </fileset>
+    <if>
+      <resourcecount when="greater" count="0" refid="viewObject"/>
+      <then>
+        <copy tofile="${viewobject.file.edit}" file="${viewobject.file}">
+          <filterchain>
+            <linecontains negate="true">
+              <contains value="DOCTYPE"/>
+            </linecontains>
+          </filterchain>
+        </copy>
+        <echo message="ADFBC File: ${viewobject.file.name}"></echo>
+        <xslt style="${adfViewPropsXsl}" in="${viewobject.file.edit}" out="${viewobject.file.props}"/>
+        <xmlproperty file="${viewobject.file.props}" collapseattributes="true"/>
+        <!-- see https://ant.apache.org/manual/Tasks/xmlproperty.html -->
+        <appendCSV item="${application.name}" first="true"/>
+        <appendCSV item="${project.name}"/>
+        <appendCSV item="View Object"/>
+        <appendCSV item="${viewobject.dir}"/>
+        <appendCSV item="${viewobject.file.name}"/>
+        <appendCSV item="${viewObject.name}"/>
+        <!-- Lege EntityObject kolommen -->
+        <appendCSV item=""/>
+        <appendCSV item=""/>
+        <!-- ViewObject kolommen -->
+        <appendCSVQuoted item="${viewObject.SQLQuery}"/>
+        <appendCSV item="${viewObject.FromList}"/>
+        <appendCSV item="${viewObject.entityUsage.Name}"/>
+        <appendCSV item="${viewObject.entityUsage.Entity}"/>
+        <appendCSVQuoted item="${viewObject.viewAttributeList}"/>
+        <appendCSVNewLine/>
+      </then>
+      <else>
+        <echo message="ADFBC File: ${viewobject.file.name} is not an Entity object. Skip file."></echo>
+      </else>
+    </if>
+  </target>
+  <macrodef name="appendCSV">
+    <attribute name="item"/>
+    <attribute name="first" default="false"/>
+    <sequential>
+      <if>
+        <equals arg1="@{first}" arg2="true"/>
+        <then>
+          <echo file="${outputFile}" append="true" message="@{item}"></echo>
+        </then>
+        <else>
+          <echo file="${outputFile}" append="true" message=",@{item}"></echo>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+  <macrodef name="appendCSVQuoted">
+    <attribute name="item"/>
+    <sequential>
+      <appendCSV item='"'/>
+      <appendCSV item="@{item}" first="true"/>
+      <appendCSV item='"' first="true"/>
+    </sequential>
+  </macrodef>
+  <macrodef name="appendCSVNewLine">
+    <sequential>
+      <echo file="${outputFile}" append="true" message="${line.separator}"></echo>
+    </sequential>
+  </macrodef>
+</project>

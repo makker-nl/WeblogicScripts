@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:bc4j="http://xmlns.oracle.com/bc4j"
+            targetNamespace="http://xmlns.oracle.com/bc4j" elementFormDefault="qualified">
+  <xsd:element name="Entity">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="DesignTime">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Attr" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:attribute name="Name" type="xsd:string"/>
+                  <xsd:attribute name="Value" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Attribute" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="DesignTime" minOccurs="0">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="Attr">
+                      <xsd:complexType>
+                        <xsd:attribute name="Name" type="xsd:string"/>
+                        <xsd:attribute name="Value" type="xsd:integer"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="Name" type="xsd:string"/>
+            <xsd:attribute name="Precision" type="xsd:integer"/>
+            <xsd:attribute name="ColumnName" type="xsd:string"/>
+            <xsd:attribute name="SQLType" type="xsd:string"/>
+            <xsd:attribute name="Type" type="xsd:string"/>
+            <xsd:attribute name="ColumnType" type="xsd:string"/>
+            <xsd:attribute name="TableName" type="xsd:string"/>
+            <xsd:attribute name="PrimaryKey" type="xsd:string"/>
+            <xsd:attribute name="IsQueriable" type="xsd:string"/>
+            <xsd:attribute name="IsUpdateable" type="xsd:string"/>
+            <xsd:attribute name="IsPersistent" type="xsd:string"/>
+            <xsd:attribute name="IsNotNull" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Key">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="DesignTime">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="Attr">
+                      <xsd:complexType>
+                        <xsd:attribute name="Name" type="xsd:string"/>
+                        <xsd:attribute name="Value" type="xsd:string"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+              <xsd:element name="AttrArray">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="Item" maxOccurs="unbounded">
+                      <xsd:complexType>
+                        <xsd:attribute name="Value" type="xsd:string"/>
+                      </xsd:complexType>
+                    </xsd:element>
+                  </xsd:sequence>
+                  <xsd:attribute name="Name" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+            <xsd:attribute name="Name" type="xsd:string"/>
+            <xsd:attribute name="PrimaryKey" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="Name" type="xsd:string"/>
+      <xsd:attribute name="Version" type="xsd:string"/>
+      <xsd:attribute name="InheritPersonalization" type="xsd:string"/>
+      <xsd:attribute name="DBObjectType" type="xsd:string"/>
+      <xsd:attribute name="DBObjectName" type="xsd:string"/>
+      <xsd:attribute name="AliasName" type="xsd:string"/>
+      <xsd:attribute name="BindingStyle" type="xsd:string"/>
+      <xsd:attribute name="RowClass" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

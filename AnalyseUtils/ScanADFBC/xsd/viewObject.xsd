@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:bc4j="http://xmlns.oracle.com/bc4j"
+            targetNamespace="http://xmlns.oracle.com/bc4j" elementFormDefault="qualified">
+  <xsd:element name="ViewObject">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="DesignTime">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Attr" maxOccurs="unbounded">
+                <xsd:complexType>
+                  <xsd:attribute name="Name" type="xsd:string"/>
+                  <xsd:attribute name="Value" type="xsd:string"/>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="EntityUsage">
+          <xsd:complexType>
+            <xsd:attribute name="Name" type="xsd:string"/>
+            <xsd:attribute name="Entity" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="ViewAttribute" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:attribute name="Name" type="xsd:string"/>
+            <xsd:attribute name="PrecisionRule" type="xsd:string"/>
+            <xsd:attribute name="EntityAttrName" type="xsd:string"/>
+            <xsd:attribute name="EntityUsage" type="xsd:string"/>
+            <xsd:attribute name="AliasName" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="Name" type="xsd:string"/>
+      <xsd:attribute name="Version" type="xsd:string"/>
+      <xsd:attribute name="InheritPersonalization" type="xsd:string"/>
+      <xsd:attribute name="SelectListFlags" type="xsd:integer"/>
+      <xsd:attribute name="FromListFlags" type="xsd:integer"/>
+      <xsd:attribute name="WhereFlags" type="xsd:integer"/>
+      <xsd:attribute name="BindingStyle" type="xsd:string"/>
+      <xsd:attribute name="CustomQuery" type="xsd:string"/>
+      <xsd:attribute name="SelectAllAttributes" type="xsd:string"/>
+      <xsd:attribute name="PageIterMode" type="xsd:string"/>
+      <xsd:attribute name="RowClass" type="xsd:string"/>
+      <xsd:attribute name="SelectList" type="xsd:string"/>
+      <xsd:attribute name="FromList" type="xsd:string"/>
+      <xsd:attribute name="Where" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

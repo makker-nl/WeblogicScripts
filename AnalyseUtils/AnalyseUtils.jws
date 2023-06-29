@@ -29,5 +29,7 @@
       <hash><url n="URL" path="ScanMDSReferences/ScanMDSReferences.jpr"/></hash>
       <hash><url n="URL" path="ScanSensors/ScanSensors.jpr"/></hash>
       <hash><url n="URL" path="TransformMDS2JWS/TransformMDS2JWS.jpr"/></hash>
+      <hash><url n="URL" path="ScanADFBC/ScanADFBC.jpr"/></hash>
+      <hash><url n="URL" path="ScanScriptsForDBObjects/ScanScriptsForDBObjects.jpr"/></hash>
    </list>
 </jws:workspace>

@@ -23,6 +23,10 @@ The project relies on the [build.properties](build.properties) file.
 In the properties file, the main properties to set are:
 
 ````
+fmw.home=${env.FMW_HOME}
+#
+ant-contrib.jar=${fmw.home}/oracle_common/modules/thirdparty/ant-contrib-1.0b3.jar
+...
 svnRoot=c:/Data/svn/SOA/trunk/SOAProjects
 outputFile=jca-files.csv
 ````
@@ -35,6 +39,6 @@ First set your FMW Environment with a script like [../../scripts/fmw12c_env.sh](
 
 Then run the script as:
 
-    $ ant -f transformMDS2JWS.xml
+    $ ant -f scanJCAFiles.xml
     
  
