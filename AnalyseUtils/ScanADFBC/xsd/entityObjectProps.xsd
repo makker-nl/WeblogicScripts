@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:bc4j="http://xmlns.oracle.com/bc4j"
+            targetNamespace="http://xmlns.oracle.com/bc4j" elementFormDefault="qualified">
+  <xsd:element name="entity">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="tableList"/>
+        <xsd:element name="columnList"/>
+      </xsd:sequence>
+      <xsd:attribute name="name" type="xsd:string"/>
+      <xsd:attribute name="version" type="xsd:string"/>
+      <xsd:attribute name="InheritPersonalization" type="xsd:string"/>
+      <xsd:attribute name="DBObjectType" type="xsd:string"/>
+      <xsd:attribute name="DBObjectName" type="xsd:string"/>
+      <xsd:attribute name="AliasName" type="xsd:string"/>
+      <xsd:attribute name="BindingStyle" type="xsd:string"/>
+      <xsd:attribute name="RowClass" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1252" ?>
-<!--Ant Build file to scan JCA files in a repository and list relvant properties-->
+<!--Ant Build file to scan JCA files in a repository and list relevant properties-->
 <project xmlns="antlib:org.apache.tools.ant" name="scanJCAFiles" default="all" basedir=".">
   <property name="author" value="Martien van den Akker"/>
   <property name="version" value="1.0"/>

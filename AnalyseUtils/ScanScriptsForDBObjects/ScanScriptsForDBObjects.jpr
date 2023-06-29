@@ -75,7 +75,7 @@
       <string v="oracle.jdeveloper.model.PathsConfiguration/cepContentSet"/>
       <string v="oracle.tip.tools.ide.ess.addin.ESSContentSetProvider/ess-content"/>
    </list>
-   <value n="defaultPackage" v="ScanJCAFiles"/>
+   <value n="defaultPackage" v="ScanScriptsForDBObjects"/>
    <hash n="oracle.ide.model.ResourcePaths">
       <hash n="resourcesContentSet">
          <list n="constituent-sets">
@@ -90,7 +90,6 @@
             <hash>
                <list n="pattern-filters">
                   <string v="+filepath.xml"/>
-                  
                </list>
                <list n="url-path">
                   <url path="xml/"/>
@@ -123,7 +122,7 @@
    </hash>
    <hash n="oracle.jdeveloper.compiler.ant.AntConfiguration">
       <value n="makeTarget" v="all"/>
-      <url n="projectBuildfile" path="scanJCAFiles.xml"/>
+      <url n="projectBuildfile" path="ScanScriptsForDBObjects.xml"/>
       <list n="targetList">
          <string v="all"/>
          <string v="clean"/>
@@ -137,8 +136,8 @@
       <value n="webIANAEncoding" v="windows-1252"/>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
-      <value n="j2eeWebAppName" v="AnalyseUtils-ScanJCAFiles-webapp"/>
-      <value n="j2eeWebContextRoot" v="AnalyseUtils-ScanJCAFiles-context-root"/>
+      <value n="j2eeWebAppName" v="AnalyseUtils-ScanScriptsForDBObjects-webapp"/>
+      <value n="j2eeWebContextRoot" v="AnalyseUtils-ScanScriptsForDBObjects-context-root"/>
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">
@@ -157,12 +156,10 @@
             <value n="custom" v="false"/>
             <value n="name" v="Default"/>
             <hash n="oracle.jdevimpl.runner.xslt.XSLTConfiguration"/>
-         </hash>
-     
+         </hash>         
       </hash>
       <list n="runConfigurationList">
          <string v="Default"/>
-     
       </list>
    </hash>
    <hash n="oracle.jdevimpl.config.JProjectPaths">

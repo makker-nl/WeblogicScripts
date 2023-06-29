@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:bc4j="http://xmlns.oracle.com/bc4j"
+            elementFormDefault="qualified">
+  <xsd:element name="viewObject">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="entityUsage">
+          <xsd:complexType>
+            <xsd:attribute name="Name" type="xsd:string"/>
+            <xsd:attribute name="Entity" type="xsd:string"/>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="viewAttributeList" type="xsd:string"/>
+      </xsd:sequence>
+      <xsd:attribute name="Name" type="xsd:string"/>
+      <xsd:attribute name="Version" type="xsd:string"/>
+      <xsd:attribute name="InheritPersonalization" type="xsd:string"/>
+      <xsd:attribute name="SelectListFlags" type="xsd:integer"/>
+      <xsd:attribute name="FromListFlags" type="xsd:integer"/>
+      <xsd:attribute name="WhereFlags" type="xsd:integer"/>
+      <xsd:attribute name="BindingStyle" type="xsd:string"/>
+      <xsd:attribute name="CustomQuery" type="xsd:string"/>
+      <xsd:attribute name="SelectAllAttributes" type="xsd:string"/>
+      <xsd:attribute name="PageIterMode" type="xsd:string"/>
+      <xsd:attribute name="RowClass" type="xsd:string"/>
+      <xsd:attribute name="SelectList" type="xsd:string"/>
+      <xsd:attribute name="FromList" type="xsd:string"/>
+      <xsd:attribute name="Where" type="xsd:string"/>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

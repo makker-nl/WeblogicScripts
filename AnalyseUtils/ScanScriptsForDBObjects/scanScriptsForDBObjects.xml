@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!--Ant Build file to scan SQL and Python files in a repository and list relevant properties-->
+<project xmlns="antlib:org.apache.tools.ant" name="scanJCAFiles" default="all" basedir=".">
+  <property name="author" value="Martien van den Akker" />
+  <property name="version" value="1.0" />
+  <property environment="env" />
+  <property file="build.properties" />
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="${ant-contrib.jar}" />
+    </classpath>
+  </taskdef>
+  <!-- Initialisatie -->
+  <target name="clean" description="Clean the temp folder">
+    <delete file="${outputFile}" />
+  </target>
+  <!-- Perform all -->
+  <target name="all" description="Scan All SOA applications" depends="clean">
+    <echo>FMW_HOME=${fmw.home}.</echo>
+    <appendCSV item='ScriptDir' first="true" />
+    <appendCSV item='ScriptName' />
+    <appendCSV item='Tables' />
+    <appendCSV item='Views' />
+    <appendCSVNewLine />
+    <foreach param="script.file" target="handleScript" delimiter=';' inheritall="true">
+      <path>
+        <fileset id="dist.contents" dir="${scriptsRoot}" includes="**/*.sql,**/*.py" />
+      </path>
+    </foreach>
+  </target>
+  <target name="handleScript">
+    <echo message="ScriptFile: ${script.file}"></echo>
+    <basename property="script.name" file="${script.file}" />
+    <dirname property="script.dir" file="${script.file}" />
+    <echo message="Script dir: ${script.dir}"></echo>
+    <appendCSV item='${script.dir}' first="true" />
+    <appendCSV item='${script.name}' />
+    <appendCSV item='"' first="false" />
+    <!-- tables -->
+    <for list="${tables}" param="table" delimiter=",">
+      <sequential>
+        <fileset id="matches" file="${script.file}">
+          <contains text="@{table}" casesensitive="no" />
+        </fileset>
+        <if>
+          <resourcecount when="greater" count="0" refid="matches" />
+          <then>
+            <if>
+              <isset property="next.table"></isset>
+              <then>
+                <appendCSV item='@{table}' />
+              </then>
+              <else>
+                <appendCSV item='@{table}' first="true" />
+              </else>
+            </if>
+            <property name="next.table" value="true" />
+          </then>
+          <else>
+          </else>
+        </if>
+      </sequential>
+    </for>
+    <!-- views -->
+    <appendCSV item='"' first="true" />
+    <appendCSV item='"' first="false" />
+    <for list="${views}" param="view" delimiter=",">
+      <sequential>
+        <fileset id="matches" file="${script.file}">
+          <contains text="@{view}" casesensitive="no" />
+        </fileset>
+        <if>
+          <resourcecount when="greater" count="0" refid="matches" />
+          <then>
+            <if>
+              <isset property="next.view"></isset>
+              <then>
+                <appendCSV item='@{view}' />
+              </then>
+              <else>
+                <appendCSV item='@{view}' first="true" />
+              </else>
+            </if>
+            <property name="next.view" value="true" />
+          </then>
+          <else>
+          </else>
+        </if>
+      </sequential>
+    </for>
+    <appendCSV item='"' first="true" />
+    <appendCSVNewLine />
+  </target>
+
+
+  <macrodef name="appendCSV">
+    <attribute name="item" />
+    <attribute name="first" default="false" />
+    <sequential>
+      <if>
+        <equals arg1="@{first}" arg2="true" />
+        <then>
+          <echo file="${outputFile}" append="true" message="@{item}"></echo>
+        </then>
+        <else>
+          <echo file="${outputFile}" append="true" message=",@{item}"></echo>
+        </else>
+      </if>
+    </sequential>
+  </macrodef>
+
+  <macrodef name="appendCSVNewLine">
+    <sequential>
+      <echo file="${outputFile}" append="true" message="${line.separator}"></echo>
+    </sequential>
+  </macrodef>
+
+</project>
